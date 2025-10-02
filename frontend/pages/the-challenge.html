@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Challenge - Interactive Production Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <style>
+        /* Inline fallback styles for Git hosting */
+        .professional-nav {
+            background: linear-gradient(135deg, #2B2E4A 0%, #1a1d2e 100%) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+            width: 100% !important;
+        }
+        
+        .nav-container {
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            padding: 0 1rem !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        
+        .nav-brand {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-decoration: none !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-menu {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-link-pro {
+            color: white !important;
+            text-decoration: none !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 0.5rem !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.25rem !important;
+            white-space: nowrap !important;
+            cursor: pointer !important;
+        }
+        
+        .nav-link-pro:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E3B330 !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .nav-link-pro.active {
+            background-color: #E3B330 !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(227, 179, 48, 0.3) !important;
+        }
+        
+        .nav-link-pro.home-link {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .nav-link-pro.home-link:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .nav-link-pro.home-link.active {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            color: #E3B330 !important;
+        }
+        
+        .dropdown {
+            position: relative !important;
+        }
+        
+        .dropdown-toggle::after {
+            content: '▾' !important;
+            font-size: 0.75rem !important;
+            transition: transform 0.3s ease !important;
+        }
+        
+        .dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg) !important;
+        }
+        
+        .dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            background: white !important;
+            border-radius: 0.5rem !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            min-width: 200px !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(-10px) !important;
+            transition: all 0.3s ease !important;
+            z-index: 1001 !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+        
+        .dropdown-item {
+            display: block !important;
+            padding: 0.75rem 1rem !important;
+            color: #2B2E4A !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.2s ease !important;
+            font-weight: 500 !important;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa !important;
+            color: #E3B330 !important;
+            padding-left: 1.25rem !important;
+        }
+        
+        .dropdown-header {
+            padding: 0.75rem 1rem !important;
+            font-weight: 700 !important;
+            color: #2B2E4A !important;
+            background-color: #f8f9fa !important;
+            border-bottom: 2px solid #E3B330 !important;
+            border-top-left-radius: 0.5rem !important;
+            border-top-right-radius: 0.5rem !important;
+            font-size: 0.875rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none !important;
+            background: none !important;
+            border: none !important;
+            color: white !important;
+            font-size: 1.5rem !important;
+            cursor: pointer !important;
+            padding: 0.5rem !important;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none !important;
+                position: absolute !important;
+                top: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: #2B2E4A !important;
+                flex-direction: column !important;
+                padding: 1rem !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            }
+            
+            .nav-menu.active {
+                display: flex !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: block !important;
+            }
+            
+            .dropdown-menu {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                box-shadow: none !important;
+                background: rgba(255, 255, 255, 0.05) !important;
+                margin-top: 0.5rem !important;
+                border-radius: 0.25rem !important;
+            }
+            
+            .dropdown-item {
+                color: white !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: #E3B330 !important;
+            }
+            
+            .dropdown-header {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: white !important;
+                border-bottom: 2px solid #E3B330 !important;
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+            background-image: radial-gradient(#F3F4F6 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .active-day, .active-view {
+            background-color: #3B82F6;
+            color: #ffffff;
+            box-shadow: 0 4px 14px -2px rgba(59, 130, 246, 0.4);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #E5E7EB;
+        }
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .collapsible-content {
+            display: none;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Professional Navigation -->
+    <nav class="professional-nav text-white p-4">
+        <div class="nav-container flex justify-between items-center">
+            <a href="index.html" class="nav-brand">
+                <img src="logo.jpg" alt="Limit Edge Logo" class="h-8 w-auto mr-3">
+                Limit Edge Reality Show
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link-pro home-link">Home</a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Budget
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Budget Management</div>
+                        <a href="budget-overview.html" class="dropdown-item">Overview</a>
+                        <a href="pre-production.html" class="dropdown-item">Pre-Production</a>
+                        <a href="production.html" class="dropdown-item">Production</a>
+                        <a href="post-production.html" class="dropdown-item">Post-Production</a>
+                        <a href="marketing.html" class="dropdown-item">Marketing</a>
+                        <a href="contingency.html" class="dropdown-item">Contingency</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle active">
+                        Business
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Business & Investment</div>
+                        <a href="investor-benefits.html" class="dropdown-item">Investor Benefits</a>
+                        <a href="teaser-pilot.html" class="dropdown-item">Teaser & Pilot</a>
+                        <a href="participant-requirements.html" class="dropdown-item">Participant Requirements</a>
+                        <a href="the-challenge.html" class="dropdown-item">The Challenge</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="presentation-slides.html" class="nav-link-pro">Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+
+        <header class="text-center mb-10 md:mb-16">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">THE CHALLENGE</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-500 max-w-2xl mx-auto">An Interactive 10-Day Professional & Entertainment Plan</p>
+        </header>
+
+        <main>
+            <div class="section-card">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Production Dashboard</h2>
+                    <p class="mt-1 text-gray-500">Select a day to view its challenges or switch to the detailed filming plan. This dashboard provides a complete overview of the event's creative design and logistical execution.</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8">
+                    <div id="view-toggle" class="flex p-1 rounded-xl bg-gray-100 shadow-inner">
+                        <button data-view="challenges" class="view-btn active-view px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300">Challenge Details</button>
+                        <button data-view="filming" class="view-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300">Filming Plan</button>
+                    </div>
+                </div>
+
+                <nav id="day-selector" class="flex flex-wrap justify-center gap-2 mb-8">
+                </nav>
+            </div>
+
+            <div id="challenges-view">
+                <h3 id="view-title" class="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-900"></h3>
+                <div id="challenge-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+
+            <div id="filming-plan-view" class="hidden">
+                 <div class="section-card">
+                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-2 text-gray-900">Daily Filming & Production Plan</h3>
+                     <p class="text-center text-gray-500 mb-8 max-w-3xl mx-auto">This section outlines the comprehensive daily schedule for filming, interviews, and production logistics. It serves as a master call sheet, ensuring all departments are synchronized from dawn until wrap.</p>
+
+                     <div id="filming-plan-content" class="space-y-4 max-w-4xl mx-auto"></div>
+                </div>
+            </div>
+
+            <div class="section-card mt-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-center mb-2 text-gray-900">Challenge Variety Overview</h3>
+                <p class="text-center text-gray-500 mb-8 max-w-3xl mx-auto">To ensure a dynamic and engaging show, the 10-day plan incorporates a balanced mix of challenge types. This chart visualizes the thematic distribution, highlighting the blend of controlled arena events, natural outdoor trials, technical obstacle courses, and direct team competitions.</p>
+                <div class="chart-container">
+                    <canvas id="challengeTypeChart"></canvas>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer class="bg-[#2B2E4A] text-white p-6 text-center text-sm">
+        <p>Limit Edge - The Challenge | Alexander Aryanfar</p>
+        <p class="mt-1">Contact: alexander.aryanfar@gmail.com | @limitedgeshow | +1 (705) 970-0443</p>
+    </footer>
+
+    <script>
+        const challengeData = {
+            1: {
+                title: "Day 1 – Foundation of the Arena",
+                challenges: [
+                    { type: 'Endurance', name: 'Treadmill Marathon', icon: '🏃', area: 'Indoor gym, 10 treadmills in a row.', equipment: '10 pro treadmills with screen timers.', entertainment: 'Split-screen live stats (distance, time, heart rate) on big LED. Audience cheers contestants lasting longest.' },
+                    { type: 'Speed', name: 'Beach Sprint 100m', icon: '⚡', area: 'Outdoor beach lane (marked with flags).', equipment: 'Stopwatch system, starting blocks.', entertainment: 'Drone shot following runners + slow-motion replay at finish line.' },
+                    { type: 'Strength', name: 'Tire Flip Race', icon: '🏋️', area: 'Outdoor field with 40m lane.', equipment: 'Tractor tires (100–200 kg).', entertainment: 'Each flip shown with "power meter" graphic, race commentary for excitement.' }
+                ]
+            },
+            2: {
+                title: "Day 2 – Balance & Power",
+                challenges: [
+                    { type: 'Endurance', name: 'Rowing Machine Marathon', icon: '🏃', area: 'Indoor gym, rowing machines side-by-side.', equipment: 'Concept2 rowers with meters.', entertainment: 'Live scoreboard with meters rowed, dramatic lighting & music.' },
+                    { type: 'Speed', name: 'Agility Ladder + Cones', icon: '⚡', area: 'Outdoor track.', equipment: 'Agility ladder, cones, timing gates.', entertainment: 'Fast camera cuts, crowd reacts to mistakes (touching lines = penalty).' },
+                    { type: 'Strength', name: 'Deadlift Max Reps', icon: '🏋️', area: 'Indoor stage with lifting platform.', equipment: 'Olympic barbells, plates.', entertainment: 'Spotlights + dramatic countdown for each lift, audience counts reps.' }
+                ]
+            },
+            3: {
+                title: "Day 3 – Explosive Energy",
+                challenges: [
+                    { type: 'Endurance', name: 'Cycling Sprint 20km', icon: '🏃', area: 'Outdoor coastal road (closed track).', equipment: 'Bikes, helmets, GoPro cams.', entertainment: 'On-bike cameras + aerial drones. Live commentators narrating the race.' },
+                    { type: 'Speed', name: 'Obstacle Dash', icon: '⚡', area: 'Outdoor arena with obstacles.', equipment: 'Walls, tunnels, rope nets.', entertainment: 'Epic music, slow-motion crash replays, crowd laughs at slips.' },
+                    { type: 'Strength', name: 'Atlas Stones Lift', icon: '🏋️', area: 'Indoor stage.', equipment: 'Concrete stones (50–120 kg).', entertainment: 'Lighting spot each stone; audience cheers louder with each heavier lift.' }
+                ]
+            },
+            4: {
+                title: "Day 4 – Endurance of Mind & Body",
+                challenges: [
+                    { type: 'Endurance', name: 'Plank Hold', icon: '🏃', area: 'Indoor floor space.', equipment: 'Mats, cameras overhead.', entertainment: 'Big clock countdown, heart-rate monitors on screen.' },
+                    { type: 'Speed', name: 'Reaction Wall – Lights', icon: '⚡', area: 'Indoor wall setup.', equipment: 'LED reaction wall.', entertainment: 'Contestants slap lights as they appear, crowd chants rhythmically.' },
+                    { type: 'Strength', name: 'Log Carry', icon: '🏋️', area: 'Outdoor field, 50m path.', equipment: 'Heavy wooden logs with handles.', entertainment: 'Viking-style theme music, smoke effects at finish line.' }
+                ]
+            },
+            5: {
+                title: "Day 5 – The Water Element",
+                challenges: [
+                    { type: 'Endurance', name: 'Open-Water Swim', icon: '🏃', area: 'Sea section, 200m marked zone.', equipment: 'Safety buoys, kayaks for rescue.', entertainment: 'Drone shots over water, underwater GoPro cuts.' },
+                    { type: 'Speed', name: 'Beach Flag Dash', icon: '⚡', area: 'Sandy beach, 50m track.', equipment: 'Flags, cones.', entertainment: 'Sudden whistle start, replay of fastest dive for flags.' },
+                    { type: 'Strength', name: 'Sandbag Pyramid Build', icon: '🏋️', area: 'Beach zone.', equipment: 'Sandbags (20–40kg).', entertainment: 'Contestants building pyramids while crowd counts sandbags loudly.' }
+                ]
+            },
+            6: {
+                title: "Day 6 – Team Spirit",
+                challenges: [
+                    { type: 'Endurance', name: 'Relay Run 5km', icon: '🏃', area: 'Outdoor track.', equipment: 'Batons.', entertainment: 'Team transitions shown in close-ups, suspense at handoffs.' },
+                    { type: 'Speed', name: 'Sled Push Race', icon: '⚡', area: 'Indoor turf track.', equipment: 'Weighted sleds.', entertainment: 'Audience on both sides cheering, live timer above track.' },
+                    { type: 'Strength', name: 'Tug of War', icon: '🏋️', area: 'Outdoor sand pit.', equipment: 'Heavy rope, markers.', entertainment: 'Smoke machines + referee countdown; crowd divided into cheering sides.' }
+                ]
+            },
+            7: {
+                title: "Day 7 – Mental Pressure",
+                challenges: [
+                    { type: 'Endurance', name: 'Stair Run 50 Floors', icon: '🏃', area: 'Tall building stairwell (indoor).', equipment: 'Timing chips.', entertainment: 'Live split-screen race cam (floor 10, 20, 30…).' },
+                    { type: 'Speed', name: 'Reflex Catch Test', icon: '⚡', area: 'Indoor setup.', equipment: 'Falling sticks (reaction speed test).', entertainment: 'Ultra slow-motion replay of closest catches.' },
+                    { type: 'Strength', name: 'Car Pull', icon: '🏋️', area: 'Outdoor parking lot.', equipment: 'SUV/car with harness.', entertainment: 'Audience screams each meter pulled, DJ beats match contestants\' effort.' }
+                ]
+            },
+            8: {
+                title: "Day 8 – Core & Stability",
+                challenges: [
+                    { type: 'Endurance', name: 'Battle Rope 5 min', icon: '🏃', area: 'Indoor.', equipment: 'Heavy ropes.', entertainment: 'Close-up slow-motion sweat + rope waves.' },
+                    { type: 'Speed', name: 'Sprint with Resistance Bands', icon: '⚡', area: 'Outdoor track.', equipment: 'Resistance belts.', entertainment: 'Tension graphics on screen, replay of most explosive launch.' },
+                    { type: 'Strength', name: 'Farmer\'s Walk', icon: '🏋️', area: 'Outdoor 40m lane.', equipment: 'Heavy kettlebells.', entertainment: 'Commentators highlight grip failures, suspense builds.' }
+                ]
+            },
+            9: {
+                title: "Day 9 – Semi-Final",
+                challenges: [
+                    { type: 'Endurance', name: 'Rowing 10km', icon: '🏃', area: 'Indoor rowing machines.', equipment: 'Concept2 rowers.', entertainment: 'Live energy bar graphs per athlete.' },
+                    { type: 'Speed', name: 'Parkour Sprint', icon: '⚡', area: 'Outdoor custom parkour track.', equipment: 'Walls, rails, mats.', entertainment: 'Matrix-style slow motion jumps + audience roar.' },
+                    { type: 'Strength', name: 'One-Hand Deadlift', icon: '🏋️', area: 'Indoor stage.', equipment: 'Barbell, weights.', entertainment: 'Spotlights + fire torches for final lift.' }
+                ]
+            },
+            10: {
+                title: "Day 10 – Grand Finale",
+                challenges: [
+                    { type: 'Endurance', name: 'Triathlon Mini', icon: '🏃', area: 'Outdoor beach & road loop.', equipment: 'Bikes, buoys, timing system.', entertainment: 'Multi-camera coverage, commentators hype every section.' },
+                    { type: 'Speed', name: 'Final Sprint Duel 200m', icon: '⚡', area: 'Outdoor straight lane.', equipment: 'Timing gates.', entertainment: 'Head-to-head close camera, finish line ribbon cut.' },
+                    { type: 'Strength', name: 'Ultimate Obstacle Gauntlet', icon: '🏋️', area: 'Mixed arena.', equipment: 'Rope climbs, wall lifts, weighted sleds, sandbags.', entertainment: 'Fireworks at finish, victory music, final slow-motion champion moment.' }
+                ]
+            }
+        };
+
+        const filmingPlanData = [
+            {
+                title: "General Daily Framework",
+                content: [
+                    "**07:00 – 08:00** | Wake-up, breakfast (B-roll of morning routines)",
+                    "**08:00 – 09:00** | Call time, makeup/wardrobe, mic setup",
+                    "**09:00 – 14:00** | Filming Challenges (3 blocks)",
+                    "**14:00 – 15:00** | Lunch break (crew + contestants, informal B-roll)",
+                    "**15:00 – 18:00** | Private Interviews + sponsor inserts",
+                    "**18:00 – 19:00** | Rest, personal downtime",
+                    "**19:00 – 21:00** | Nightly Gathering + Recap/Scoring",
+                    "**21:00 – 23:00** | Crew wrap-up, backups, editorial notes",
+                ]
+            },
+            {
+                title: "Detailed Filming Plan",
+                content: [
+                    "**MORNING (07:00-09:00):** Crew captures wake-ups, warm-ups, and drone establishing shots. Wardrobe and sound prep contestants. Directors brief the team.",
+                    "**CHALLENGES (09:00-14:00):** Each challenge gets ~90 minutes of filming (30 min setup, 40 min competition, 20 min post-reactions). Multi-camera setups including drones, GoPros, and slow-motion capture are used to match the energy of each challenge.",
+                    "**PRIVATE INTERVIEWS (15:00-18:00):** Conducted one-on-one in a confessional booth. Questions focus on strategy, rivalries, and motivation. Each contestant gets 15-20 minutes.",
+                    "**EVENING GATHERING (19:00-21:00):** A hosted discussion covering the day's emotional highlights and conflicts. On-screen scoring and leaderboard updates are filmed with a cinematic style.",
+                    "**PRODUCTION WRAP (21:00-23:00):** Data wrangling and footage backup. Editorial team drafts notes. Director debriefs crew and medical team checks on contestants."
+                ]
+            },
+            {
+                title: "Daily Crew Deployment",
+                content: [
+                    "**Camera Crew:** 8 (3 static, 2 roaming, 1 drone, 1 GoPro, 1 slow-mo)",
+                    "**Sound Crew:** 3 (mics, boom, mix)",
+                    "**Directors:** 2 (Main + Technical)",
+                    "**Lighting:** 2 (for strength challenges + interviews)",
+                    "**Medical/Psych Support:** 2",
+                    "**Trainers & Coordinators:** 3",
+                    "**Editors (on-site):** 2",
+                ]
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const daySelector = document.getElementById('day-selector');
+            const challengeCardsContainer = document.getElementById('challenge-cards');
+            const viewTitle = document.getElementById('view-title');
+            const viewToggle = document.getElementById('view-toggle');
+            const challengesView = document.getElementById('challenges-view');
+            const filmingPlanView = document.getElementById('filming-plan-view');
+            const filmingPlanContent = document.getElementById('filming-plan-content');
+
+            let currentDay = 1;
+            let currentView = 'challenges';
+
+            function renderChallenges(day) {
+                const data = challengeData[day];
+                viewTitle.textContent = data.title;
+                challengeCardsContainer.innerHTML = '';
+
+                data.challenges.forEach(challenge => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-xl shadow-md p-6 transition-transform transform hover:scale-105';
+                    card.innerHTML = `
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-4">${challenge.icon}</span>
+                            <div>
+                                <p class="text-sm font-semibold text-blue-500">${challenge.type.toUpperCase()}</p>
+                                <h4 class="text-xl font-bold text-gray-900">${challenge.name}</h4>
+                            </div>
+                        </div>
+                        <div class="space-y-3 text-gray-600">
+                            <p><strong class="font-semibold text-gray-700">Area:</strong> ${challenge.area}</p>
+                            <p><strong class="font-semibold text-gray-700">Equipment:</strong> ${challenge.equipment}</p>
+                            <p><strong class="font-semibold text-gray-700">Entertainment:</strong> ${challenge.entertainment}</p>
+                        </div>
+                    `;
+                    challengeCardsContainer.appendChild(card);
+                });
+            }
+
+            function renderFilmingPlan() {
+                filmingPlanContent.innerHTML = '';
+                filmingPlanData.forEach((section, index) => {
+                    const sectionEl = document.createElement('div');
+                    sectionEl.className = 'border border-gray-200 rounded-lg p-5 collapsible-card';
+                    const listItems = section.content.map(item => `<li class="mb-2">${item.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-700">$1</strong>')}</li>`).join('');
+                    sectionEl.innerHTML = `
+                        <div class="collapsible-header">
+                            <h4 class="text-xl font-bold text-gray-900">${section.title}</h4>
+                            <span class="text-xl text-gray-500 transform transition-transform duration-300">▼</span>
+                        </div>
+                        <ul class="collapsible-content list-disc list-inside text-gray-600 space-y-1">
+                            ${listItems}
+                        </ul>
+                    `;
+                    filmingPlanContent.appendChild(sectionEl);
+
+                    const header = sectionEl.querySelector('.collapsible-header');
+                    const content = sectionEl.querySelector('.collapsible-content');
+                    const arrow = sectionEl.querySelector('span');
+                    header.addEventListener('click', () => {
+                        const isVisible = content.style.display === 'block';
+                        content.style.display = isVisible ? 'none' : 'block';
+                        arrow.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(-180deg)';
+                    });
+                    if (index === 0) {
+                      content.style.display = 'block';
+                      arrow.style.transform = 'rotate(-180deg)';
+                    }
+                });
+            }
+
+            function updateView() {
+                if (currentView === 'challenges') {
+                    challengesView.classList.remove('hidden');
+                    filmingPlanView.classList.add('hidden');
+                    daySelector.style.visibility = 'visible';
+                    renderChallenges(currentDay);
+                } else {
+                    challengesView.classList.add('hidden');
+                    filmingPlanView.classList.remove('hidden');
+                    daySelector.style.visibility = 'hidden';
+                    renderFilmingPlan();
+                }
+
+                document.querySelectorAll('.view-btn').forEach(btn => {
+                    btn.classList.remove('active-view');
+                    if (btn.dataset.view === currentView) {
+                        btn.classList.add('active-view');
+                    }
+                });
+            }
+
+            for (let i = 1; i <= 10; i++) {
+                const button = document.createElement('button');
+                button.textContent = `Day ${i}`;
+                button.dataset.day = i;
+                button.className = `day-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-300 border border-gray-300 hover:bg-blue-500 hover:text-white`;
+                if (i === 1) button.classList.add('active-day');
+                daySelector.appendChild(button);
+            }
+
+            daySelector.addEventListener('click', (e) => {
+                if (e.target.classList.contains('day-btn')) {
+                    currentDay = parseInt(e.target.dataset.day);
+                    document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active-day'));
+                    e.target.classList.add('active-day');
+                    renderChallenges(currentDay);
+                }
+            });
+
+            viewToggle.addEventListener('click', (e) => {
+                if (e.target.classList.contains('view-btn')) {
+                    currentView = e.target.dataset.view;
+                    updateView();
+                }
+            });
+
+            const ctx = document.getElementById('challengeTypeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Gym / Arena', 'Outdoor / Natural', 'Obstacle / Technical', 'Team / Competition'],
+                    datasets: [{
+                        label: 'Number of Challenges',
+                        data: [13, 9, 4, 4],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.9)',
+                            'rgba(249, 115, 22, 0.9)',
+                            'rgba(16, 185, 129, 0.9)',
+                            'rgba(239, 68, 68, 0.9)'
+                        ],
+                        borderColor: '#F9FAFB',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#4B5563',
+                                font: {
+                                    size: 14,
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1F2937',
+                            titleFont: { size: 16, weight: 'bold', family: 'Inter' },
+                            bodyFont: { size: 14, family: 'Inter' },
+                            padding: 12,
+                            cornerRadius: 6
+                        }
+                    }
+                }
+            });
+
+            updateView();
+        });
+    </script>
+</body>
+</html>

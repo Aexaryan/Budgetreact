@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limit Edge - Program Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <style>
+        /* Inline fallback styles for Git hosting */
+        .professional-nav {
+            background: linear-gradient(135deg, #2B2E4A 0%, #1a1d2e 100%) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+            width: 100% !important;
+        }
+        
+        .nav-container {
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            padding: 0 1rem !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        
+        .nav-brand {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-decoration: none !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-menu {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-link-pro {
+            color: white !important;
+            text-decoration: none !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 0.5rem !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.25rem !important;
+            white-space: nowrap !important;
+            cursor: pointer !important;
+        }
+        
+        .nav-link-pro:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E3B330 !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .nav-link-pro.active {
+            background-color: #E3B330 !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(227, 179, 48, 0.3) !important;
+        }
+        
+        .nav-link-pro.home-link {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .nav-link-pro.home-link:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .nav-link-pro.home-link.active {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            color: #E3B330 !important;
+        }
+        
+        .dropdown {
+            position: relative !important;
+        }
+        
+        .dropdown-toggle::after {
+            content: '▾' !important;
+            font-size: 0.75rem !important;
+            transition: transform 0.3s ease !important;
+        }
+        
+        .dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg) !important;
+        }
+        
+        .dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            background: white !important;
+            border-radius: 0.5rem !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            min-width: 200px !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(-10px) !important;
+            transition: all 0.3s ease !important;
+            z-index: 1001 !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+        
+        .dropdown-item {
+            display: block !important;
+            padding: 0.75rem 1rem !important;
+            color: #2B2E4A !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.2s ease !important;
+            font-weight: 500 !important;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa !important;
+            color: #E3B330 !important;
+            padding-left: 1.25rem !important;
+        }
+        
+        .dropdown-header {
+            padding: 0.75rem 1rem !important;
+            font-weight: 700 !important;
+            color: #2B2E4A !important;
+            background-color: #f8f9fa !important;
+            border-bottom: 2px solid #E3B330 !important;
+            border-top-left-radius: 0.5rem !important;
+            border-top-right-radius: 0.5rem !important;
+            font-size: 0.875rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none !important;
+            background: none !important;
+            border: none !important;
+            color: white !important;
+            font-size: 1.5rem !important;
+            cursor: pointer !important;
+            padding: 0.5rem !important;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none !important;
+                position: absolute !important;
+                top: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: #2B2E4A !important;
+                flex-direction: column !important;
+                padding: 1rem !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            }
+            
+            .nav-menu.active {
+                display: flex !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: block !important;
+            }
+            
+            .dropdown-menu {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                box-shadow: none !important;
+                background: rgba(255, 255, 255, 0.05) !important;
+                margin-top: 0.5rem !important;
+                border-radius: 0.25rem !important;
+            }
+            
+            .dropdown-item {
+                color: white !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: #E3B330 !important;
+            }
+            
+            .dropdown-header {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: white !important;
+                border-bottom: 2px solid #E3B330 !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Professional Navigation -->
+    <nav class="professional-nav text-white p-4">
+        <div class="nav-container flex justify-between items-center">
+            <a href="index.html" class="nav-brand">
+                <img src="logo.jpg" alt="Limit Edge Logo" class="h-8 w-auto mr-3">
+                Limit Edge Reality Show
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link-pro home-link active">Home</a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Budget
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Budget Management</div>
+                        <a href="budget-overview.html" class="dropdown-item">Overview</a>
+                        <a href="pre-production.html" class="dropdown-item">Pre-Production</a>
+                        <a href="production.html" class="dropdown-item">Production</a>
+                        <a href="post-production.html" class="dropdown-item">Post-Production</a>
+                        <a href="marketing.html" class="dropdown-item">Marketing</a>
+                        <a href="contingency.html" class="dropdown-item">Contingency</a>
+                        <a href="accounting-system.html" class="dropdown-item">Accounting System</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Business
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Business & Investment</div>
+                        <a href="investor-benefits.html" class="dropdown-item">Investor Benefits</a>
+                        <a href="teaser-pilot.html" class="dropdown-item">Teaser & Pilot</a>
+                        <a href="participant-requirements.html" class="dropdown-item">Participant Requirements</a>
+                        <a href="the-challenge.html" class="dropdown-item">The Challenge</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="presentation-slides.html" class="nav-link-pro">Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+        
+        // Fallback styles in case CSS doesn't load properly
+        document.addEventListener('DOMContentLoaded', function() {
+            const nav = document.querySelector('.professional-nav');
+            if (nav) {
+                nav.style.background = 'linear-gradient(135deg, #2B2E4A 0%, #1a1d2e 100%)';
+                nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                nav.style.position = 'sticky';
+                nav.style.top = '0';
+                nav.style.zIndex = '1000';
+                nav.style.width = '100%';
+            }
+            
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu) {
+                navMenu.style.display = 'flex';
+                navMenu.style.alignItems = 'center';
+                navMenu.style.gap = '0.5rem';
+            }
+        });
+    </script>
+
+    <header class="bg-[#2B2E4A] text-white p-8 text-center shadow-lg">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">LIMIT EDGE</h1>
+        <p class="mt-2 text-xl font-bold">PERSIAN SPORTS REALITY SHOW</p>
+        <p class="mt-4 text-lg text-white">Where Champions Are Made</p>
+    </header>
+
+    <!-- Hero Image Section -->
+    <section class="relative">
+        <div class="w-full h-[50vh] md:h-[60vh] overflow-hidden">
+            <img src="limit-edge-hero.jpg" 
+                 alt="Limit Edge - Persian Sports Reality Show featuring athletic competitors on beach at sunset" 
+                 class="w-full h-full object-cover object-center object-top">
+        </div>
+        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <div class="text-center text-white">
+                <h2 class="text-3xl md:text-5xl font-black mb-4">LIMIT EDGE</h2>
+                <p class="text-xl md:text-2xl font-bold mb-2">PERSIAN SPORTS REALITY SHOW</p>
+                <p class="text-lg md:text-xl">Where Champions Are Made</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Legal Notice -->
+    <section class="bg-red-50 border-2 border-red-200 rounded-xl p-6 md:p-10 mb-12 mx-4 md:mx-8">
+        <h2 class="text-2xl font-bold text-center mb-6 text-red-800">LEGAL NOTICE!</h2>
+        <div class="text-gray-700 space-y-4">
+            <p>This concept, content, and all related materials are the intellectual property of <strong>Alexander Aryanfar</strong> and are protected under international copyright laws.</p>
+            <p><strong>All rights are reserved.</strong> Any reproduction, distribution, or use without prior written consent is strictly prohibited.</p>
+            <p>By receiving, viewing, or discussing this material in any form (verbally or in writing), the recipient acknowledges and agrees to be bound by a <strong>Non-Disclosure Agreement (NDA)</strong>, whether signed or implied, and commits to maintaining the confidentiality of all proprietary information contained herein.</p>
+        </div>
+    </section>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <!-- Program Summary -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Program Summary</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <p class="text-lg text-gray-700 mb-6">
+                        <strong>"Limit Edge"</strong> is a Persian-language sports reality show featuring 10 male and female athletes, randomly paired in teams, competing daily in endurance, speed, and strength challenges.
+                    </p>
+                    <p class="text-lg text-gray-700">
+                        With dynamic visuals, emotional depth, and natural environments, it's designed to match international TV standards and captivate Persian-speaking audiences worldwide.
+                    </p>
+                </div>
+                <div class="flex justify-center">
+                    <img src="Program-Summery.png" alt="Program Summary Visual" class="w-full max-w-sm rounded-lg shadow-md">
+                </div>
+            </div>
+            <div class="mt-8 bg-[#f9f5f1] p-6 rounded-lg">
+                <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Key Details</h3>
+                <ul class="space-y-2 text-gray-700">
+                    <li><strong>Language:</strong> Persian</li>
+                    <li><strong>Contestants:</strong> 10 professional/semi-professional athletes (5 men, 5 women)</li>
+                    <li><strong>Structure:</strong> Daily team challenges + individual point scoring</li>
+                    <li><strong>Locations:</strong> <a href="https://www.google.com/maps/search/torrevieja+spain" target="_blank" class="text-[#D86A36] hover:underline">Torrevieja, Spain</a> - All Star GYM (4000 m² indoor facility) + nature (beach, forest)</li>
+                    <li><strong>Episodes:</strong> 10 (each shot over one full day)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Host Information -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Host & Mentor</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-1">
+                    <img src="reza-madadi..jpg" 
+                         alt="Reza Madadi - MMA World Champion" 
+                         class="w-full h-64 object-cover rounded-lg">
+                </div>
+                <div class="md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4 text-[#2B2E4A]">Reza Madadi</h3>
+                    <p class="text-lg font-semibold text-[#D86A36] mb-4">MMA World Champion & globally known Iranian athlete</p>
+                    <ul class="space-y-3 text-gray-700">
+                        <li>• Charismatic, motivational, and relatable</li>
+                        <li>• Expert in physical and mental endurance</li>
+                        <li>• Strong youth connection</li>
+                        <li>• <strong>Role:</strong> Host, mentor, judge, emotional anchor</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Episode Structure -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Daily Episode Structure</h2>
+            <div class="text-center mb-8">
+                <img src="Daily-Episode-Structure.png" alt="Daily Episode Structure Visual" class="w-full max-w-2xl mx-auto rounded-lg shadow-md">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-4">🏃‍♂️</div>
+                    <h3 class="text-xl font-bold mb-3 text-[#2B2E4A]">01 Endurance Challenge</h3>
+                    <p class="text-gray-700">Contestants push their physical and mental limits in long, grueling tests that demand stamina, focus, and willpower.</p>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl font-bold mb-3 text-[#2B2E4A]">02 Speed Challenge</h3>
+                    <p class="text-gray-700">Explosive bursts of energy and razor-sharp reflexes determine the winner in fast-paced, time-critical competitions.</p>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-4">💪</div>
+                    <h3 class="text-xl font-bold mb-3 text-[#2B2E4A]">03 Strength Challenge</h3>
+                    <p class="text-gray-700">Raw power meets technique as athletes face heavy lifts, resistance battles, and strength-based obstacles.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Challenge Diversity & Locations -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Challenge Diversity & Locations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">All Star GYM</h3>
+                    <p class="text-gray-700 mb-2">Controlled, high-tech environment for strength and precision tasks.</p>
+                    <p class="text-sm text-[#D86A36] font-semibold mb-2">📍 <a href="https://www.google.com/maps/search/torrevieja+spain" target="_blank" class="hover:underline">Torrevieja, Spain</a></p>
+                    <p class="text-sm text-[#D86A36] font-semibold mb-4">📱 <a href="https://www.instagram.com/allstarsgymspain" target="_blank" class="hover:underline">@allstarsgymspain</a></p>
+                    <div class="text-4xl text-center">🏋️‍♂️</div>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Natural Environments</h3>
+                    <p class="text-gray-700 mb-4">Unpredictable settings (beach, forest, night) for endurance and adaptability.</p>
+                    <div class="text-4xl text-center">🌲</div>
+                </div>
+            </div>
+            <div class="mt-6 p-4 bg-[#e8f4f8] rounded-lg text-center">
+                <p class="text-gray-700"><strong>All challenges follow safety standards and are cinematic in style.</strong></p>
+            </div>
+        </section>
+
+        <!-- Dramatic Appeal & Emotional Hooks -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Dramatic Appeal & Emotional Hooks</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="flex justify-center">
+                    <img src="ramatic-Appeal & Emotional-Hooks.png" alt="Dramatic Appeal Visual" class="w-full max-w-lg rounded-lg shadow-md">
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                        <h3 class="text-lg font-bold mb-3 text-[#2B2E4A]">Team Dynamics</h3>
+                        <p class="text-gray-700 text-sm mb-3">Random pairings create tension, alliances, and character arcs that keep viewers engaged.</p>
+                        <div class="text-2xl text-center">👥</div>
+                    </div>
+                    <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                        <h3 class="text-lg font-bold mb-3 text-[#2B2E4A]">High Stakes</h3>
+                        <p class="text-gray-700 text-sm mb-3">Night challenges and psychological pressure raise emotional intensity and viewer investment.</p>
+                        <div class="text-2xl text-center">🎯</div>
+                    </div>
+                    <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                        <h3 class="text-lg font-bold mb-3 text-[#2B2E4A]">Personal Stories</h3>
+                        <p class="text-gray-700 text-sm mb-3">Confessionals reveal ambition, conflict, and exhaustion, creating emotional connections.</p>
+                        <div class="text-2xl text-center">🎭</div>
+                    </div>
+                    <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                        <h3 class="text-lg font-bold mb-3 text-[#2B2E4A]">Cinematic Feel</h3>
+                        <p class="text-gray-700 text-sm mb-3">Dramatic lighting and original soundtrack enhance the viewing experience.</p>
+                        <div class="text-2xl text-center">🎬</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Production Timeline -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Production Timeline</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-4 bg-[#f9f5f1] rounded-lg text-center">
+                    <h4 class="font-bold text-[#2B2E4A]">Format Development</h4>
+                    <p class="text-gray-600">10 days</p>
+                </div>
+                <div class="p-4 bg-[#f9f5f1] rounded-lg text-center">
+                    <h4 class="font-bold text-[#2B2E4A]">Sponsorship & Registration</h4>
+                    <p class="text-gray-600">2 weeks</p>
+                </div>
+                <div class="p-4 bg-[#f9f5f1] rounded-lg text-center">
+                    <h4 class="font-bold text-[#2B2E4A]">Final Contestant Selection</h4>
+                    <p class="text-gray-600">7 days</p>
+                </div>
+                <div class="p-4 bg-[#f9f5f1] rounded-lg text-center">
+                    <h4 class="font-bold text-[#2B2E4A]">Location Setup</h4>
+                    <p class="text-gray-600">7 days</p>
+                </div>
+                <div class="p-4 bg-[#f9f5f1] rounded-lg text-center">
+                    <h4 class="font-bold text-[#2B2E4A]">Filming</h4>
+                    <p class="text-gray-600">7 days (+2 buffer)</p>
+                </div>
+                <div class="p-4 bg-[#f9f5f1] rounded-lg text-center">
+                    <h4 class="font-bold text-[#2B2E4A]">Post-Production</h4>
+                    <p class="text-gray-600">14 days</p>
+                </div>
+            </div>
+            <div class="mt-6 p-4 bg-[#e8f4f8] rounded-lg text-center">
+                <p class="text-gray-700"><strong>First episode release – ~6 weeks from start format development</strong></p>
+            </div>
+        </section>
+
+        <!-- Facilities & Production Crew -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Facilities & Production Crew</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="flex justify-center">
+                    <img src="Facilities&Production-Crew.png" alt="Facilities & Production Crew Visual" class="w-full max-w-lg rounded-lg shadow-md">
+                </div>
+                <div class="grid grid-cols-1 gap-6">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Facilities & Equipment</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• Gym</li>
+                            <li>• Nature filming sites</li>
+                            <li>• On-site accommodation</li>
+                            <li>• Cameras, drones, lighting rigs</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Core Team</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• Director & Technical Director</li>
+                            <li>• Trainers, Cinematographers, Sounds, Psychologist, Medic</li>
+                            <li>• Editors & Motion Graphics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Target Audience & Viewer Engagement -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Target Audience & Viewer Engagement</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="flex justify-center">
+                    <img src="Target Audience.png" alt="Target Audience Visual" class="w-full max-w-lg rounded-lg shadow-md">
+                </div>
+                <div class="grid grid-cols-1 gap-6">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Core Demographic</h3>
+                        <p class="text-gray-700 mb-4">Ages 18–40, fitness/sports fans</p>
+                        
+                        <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Themes</h3>
+                        <p class="text-gray-700 mb-4">Human capacity, mental pressure, resilience</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Distribution</h3>
+                        <p class="text-gray-700 mb-4">Filimo, Namava, satellite TV</p>
+                        
+                        <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Future</h3>
+                        <p class="text-gray-700 mb-4">VIP versions, spin-offs, international franchises</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overall Budget Breakdown -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Overall Budget Breakdown ($372,600)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Pre-Production</h3>
+                    <p class="text-2xl font-black text-[#E3B330] mb-2">$33,000 (8.86%)</p>
+                    <p class="text-gray-700 text-sm">Casting, permits, obstacle design, location scouting.</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Production</h3>
+                    <p class="text-2xl font-black text-[#5D6D93] mb-2">$191,000 (51.26%)</p>
+                    <p class="text-gray-700 text-sm">Full filming operations: crew, cast, equipment, transport, lodging, catering.</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Post-Production</h3>
+                    <p class="text-2xl font-black text-[#D86A36] mb-2">$54,600 (14.65%)</p>
+                    <p class="text-gray-700 text-sm">Editing, sound mixing, visual effects, color grading, motion graphics.</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Marketing & Distribution</h3>
+                    <p class="text-2xl font-black text-[#39A57D] mb-2">$33,600 (9.02%)</p>
+                    <p class="text-gray-700 text-sm">Media buys, PR campaigns, trailer production, social promotion.</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Contingency & Misc.</h3>
+                    <p class="text-2xl font-black text-[#9E9E9E] mb-2">$50,400 (13.53%)</p>
+                    <p class="text-gray-700 text-sm">Insurance, legal, and unexpected costs.</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Prize Fund</h3>
+                    <p class="text-2xl font-black text-[#FF6B6B] mb-2">$10,000 (2.68%)</p>
+                    <p class="text-gray-700 text-sm">Winner's prize money to incentivize competition and engagement.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sponsorship Opportunities -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Sponsorship Opportunities</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="flex justify-center">
+                    <img src="Sponsorship-Opportunities.png" alt="Sponsorship Opportunities Visual" class="w-full max-w-lg rounded-lg shadow-md">
+                </div>
+                <div class="flex flex-col justify-center">
+                    <p class="text-lg text-gray-700 mb-6">Ideal for supplement brands, activewear, fitness tech/apps, and lifestyle companies seeking high-visibility brand integration.</p>
+                    <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Branding Opportunities</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• Branding on clothing, equipment, challenges</li>
+                            <li>• Product placement in contestant living areas</li>
+                            <li>• Sponsor performance reports post-air</li>
+                            <li>• Social media integration and mentions</li>
+                            <li>• Behind-the-scenes content creation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Expertise -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Proven Expertise in Film & TV Production</h2>
+            <div class="text-center mb-8">
+                <p class="text-lg text-gray-700">We are a team of four professionals, each holding a Bachelor's degree in Cinema, with extensive experience across the film and television industry.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <img src="Alexander-Aryanfar.JPG" 
+                         alt="Alexander Aryanfar" 
+                         class="w-32 h-32 rounded-full mx-auto mb-4 object-cover grayscale">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Alexander Aryanfar</h3>
+                    <p class="text-[#D86A36] font-semibold">Producer</p>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <img src="Mehdi-Razi.jpeg" 
+                         alt="Mehdi Razi" 
+                         class="w-32 h-32 rounded-full mx-auto mb-4 object-cover grayscale">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Mehdi Razi</h3>
+                    <p class="text-[#D86A36] font-semibold">Director</p>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <img src="hamed-aryanfar.png" 
+                         alt="Hamed Aryanfar" 
+                         class="w-32 h-32 rounded-full mx-auto mb-4 object-cover object-top grayscale">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Hamed Aryanfar</h3>
+                    <p class="text-[#D86A36] font-semibold">Script Writer</p>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <img src="chris-Ishho.jpeg" 
+                         alt="Chris Ishoo" 
+                         class="w-32 h-32 rounded-full mx-auto mb-4 object-cover grayscale">
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Chris Ishoo</h3>
+                    <p class="text-[#D86A36] font-semibold">Production Manager</p>
+                </div>
+            </div>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Strong Background in Media Production</h3>
+                    <p class="text-gray-700">Participated in numerous movie and TV productions, covering a range of genres and formats.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Proven Track Record</h3>
+                    <p class="text-gray-700">Successfully managed complex projects with over 15 actors, navigating logistical, creative, and technical challenges.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">Diverse Creative Skills</h3>
+                    <p class="text-gray-700">Expertise spanning Directing, Cinematography, Scriptwriting, and Production Management.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-[#2B2E4A]">High-Quality Output</h3>
+                    <p class="text-gray-700">Our combined experience ensures the ability to develop, execute, and deliver world-class, high-quality media productions that meet international standards.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Information -->
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Let's Collaborate</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">📞</div>
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Phone</h3>
+                    <p class="text-gray-700">+1 (705) 970-0443</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">🌐</div>
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Website</h3>
+                    <p class="text-gray-700">www.limitedgeshow.com</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">📧</div>
+                    <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Email</h3>
+                    <p class="text-gray-700">alexander.aryanfar@gmail.com</p>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                <p class="text-lg text-gray-700"><strong>Toronto, Canada</strong></p>
+            </div>
+        </section>
+
+
+        
+    </main>
+    
+    <footer class="bg-[#2B2E4A] text-white p-6 text-center text-sm">
+        <p>Limit Edge - Program Presentation | Alexander Aryanfar</p>
+        <p class="mt-1">Contact: alexander.aryanfar@gmail.com | @limitedgeshow | +1 (705) 970-0443</p>
+    </footer>
+
+</body>
+</html>

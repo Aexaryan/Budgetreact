@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation Slides - Limit Edge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <style>
+        /* Inline fallback styles for Git hosting */
+        .professional-nav {
+            background: linear-gradient(135deg, #2B2E4A 0%, #1a1d2e 100%) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+            width: 100% !important;
+        }
+        
+        .nav-container {
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            padding: 0 1rem !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        
+        .nav-brand {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-decoration: none !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-menu {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-link-pro {
+            color: white !important;
+            text-decoration: none !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 0.5rem !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.25rem !important;
+            white-space: nowrap !important;
+            cursor: pointer !important;
+        }
+        
+        .nav-link-pro:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E3B330 !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .nav-link-pro.active {
+            background-color: #E3B330 !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(227, 179, 48, 0.3) !important;
+        }
+        
+        .nav-link-pro.home-link {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .nav-link-pro.home-link:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .nav-link-pro.home-link.active {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            color: #E3B330 !important;
+        }
+        
+        .dropdown {
+            position: relative !important;
+        }
+        
+        .dropdown-toggle::after {
+            content: '▾' !important;
+            font-size: 0.75rem !important;
+            transition: transform 0.3s ease !important;
+        }
+        
+        .dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg) !important;
+        }
+        
+        .dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            background: white !important;
+            border-radius: 0.5rem !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            min-width: 200px !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(-10px) !important;
+            transition: all 0.3s ease !important;
+            z-index: 1001 !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+        
+        .dropdown-item {
+            display: block !important;
+            padding: 0.75rem 1rem !important;
+            color: #2B2E4A !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.2s ease !important;
+            font-weight: 500 !important;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa !important;
+            color: #E3B330 !important;
+            padding-left: 1.25rem !important;
+        }
+        
+        .dropdown-header {
+            padding: 0.75rem 1rem !important;
+            font-weight: 700 !important;
+            color: #2B2E4A !important;
+            background-color: #f8f9fa !important;
+            border-bottom: 2px solid #E3B330 !important;
+            border-top-left-radius: 0.5rem !important;
+            border-top-right-radius: 0.5rem !important;
+            font-size: 0.875rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none !important;
+            background: none !important;
+            border: none !important;
+            color: white !important;
+            font-size: 1.5rem !important;
+            cursor: pointer !important;
+            padding: 0.5rem !important;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none !important;
+                position: absolute !important;
+                top: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: #2B2E4A !important;
+                flex-direction: column !important;
+                padding: 1rem !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            }
+            
+            .nav-menu.active {
+                display: flex !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: block !important;
+            }
+            
+            .dropdown-menu {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                box-shadow: none !important;
+                background: rgba(255, 255, 255, 0.05) !important;
+                margin-top: 0.5rem !important;
+                border-radius: 0.25rem !important;
+            }
+            
+            .dropdown-item {
+                color: white !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: #E3B330 !important;
+            }
+            
+            .dropdown-header {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: white !important;
+                border-bottom: 2px solid #E3B330 !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Professional Navigation -->
+    <nav class="professional-nav text-white p-4">
+        <div class="nav-container flex justify-between items-center">
+            <a href="index.html" class="nav-brand">
+                <img src="logo.jpg" alt="Limit Edge Logo" class="h-8 w-auto mr-3">
+                Limit Edge Reality Show
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link-pro home-link">Home</a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Budget
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Budget Management</div>
+                        <a href="budget-overview.html" class="dropdown-item">Overview</a>
+                        <a href="pre-production.html" class="dropdown-item">Pre-Production</a>
+                        <a href="production.html" class="dropdown-item">Production</a>
+                        <a href="post-production.html" class="dropdown-item">Post-Production</a>
+                        <a href="marketing.html" class="dropdown-item">Marketing</a>
+                        <a href="contingency.html" class="dropdown-item">Contingency</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Business
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Business & Investment</div>
+                        <a href="investor-benefits.html" class="dropdown-item">Investor Benefits</a>
+                        <a href="teaser-pilot.html" class="dropdown-item">Teaser & Pilot</a>
+                        <a href="participant-requirements.html" class="dropdown-item">Participant Requirements</a>
+                        <a href="the-challenge.html" class="dropdown-item">The Challenge</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="presentation-slides.html" class="nav-link-pro active">Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
+
+    <header class="bg-[#2B2E4A] text-white p-8 text-center shadow-lg">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">PRESENTATION SLIDES</h1>
+        <p class="mt-2 text-xl font-bold">LIMIT EDGE REALITY SHOW</p>
+        <p class="mt-4 text-lg text-white">Interactive Presentation Materials</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Presentation Files</h2>
+            <div class="text-center">
+                <p class="text-lg text-gray-700 mb-8">Complete presentation materials for the Limit Edge reality show project.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="p-6 bg-[#f9f5f1] rounded-lg border-2 border-[#E3B330] hover:shadow-lg transition-shadow">
+                        <div class="text-4xl mb-4">📋</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Pitch Deck</h3>
+                        <p class="text-gray-600 mb-4">Investor presentation materials</p>
+                        <div class="text-sm text-gray-500 mb-4">File: Actual-Plan.pdf</div>
+                        <a href="Actual-Plan.pdf" target="_blank" class="inline-block bg-[#E3B330] text-white px-4 py-2 rounded-lg hover:bg-[#D4A02A] transition-colors">View PDF</a>
+                    </div>
+                    
+                    <div class="p-6 bg-[#f9f5f1] rounded-lg border-2 border-[#5D6D93] hover:shadow-lg transition-shadow">
+                        <div class="text-4xl mb-4">📊</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Slide Deck</h3>
+                        <p class="text-gray-600 mb-4">PowerPoint/Keynote presentation</p>
+                        <div class="text-sm text-gray-500 mb-4">File: Limit-edge-presentation.pdf</div>
+                        <a href="Limit-edge-presentation.pdf" target="_blank" class="inline-block bg-[#5D6D93] text-white px-4 py-2 rounded-lg hover:bg-[#4A5A7A] transition-colors">View PDF</a>
+                    </div>
+                    
+                    <div class="p-6 bg-[#f9f5f1] rounded-lg border-2 border-[#D86A36] hover:shadow-lg transition-shadow">
+                        <div class="text-4xl mb-4">📈</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Financial Model</h3>
+                        <p class="text-gray-600 mb-4">Detailed budget spreadsheet</p>
+                        <div class="text-sm text-gray-500 mb-4">File: LimitEdge_Budget_Report.pdf</div>
+                        <a href="LimitEdge_Budget_Report.pdf" target="_blank" class="inline-block bg-[#D86A36] text-white px-4 py-2 rounded-lg hover:bg-[#C55A2A] transition-colors">View PDF</a>
+                    </div>
+                </div>
+                
+                <!-- Video Section -->
+                <div class="mt-8 p-6 bg-[#f9f5f1] rounded-lg border-2 border-[#39A57D]">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🎬</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#2B2E4A]">Video Presentation</h3>
+                        <p class="text-gray-600 mb-4">Animated presentation video</p>
+                        <div class="text-sm text-gray-500 mb-4">File: presentation-video.mp4</div>
+                        <div class="bg-gray-200 rounded-lg p-8 max-w-2xl mx-auto">
+                            <div class="text-gray-500 text-lg">Video Player Placeholder</div>
+                            <p class="text-sm text-gray-400 mt-2">Upload your presentation video here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-blue-800">Complete Presentation Package</h3>
+                    <p class="text-blue-700">All presentation materials are now available for download and viewing. The video section is ready for your presentation video upload.</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer class="bg-[#2B2E4A] text-white p-6 text-center text-sm">
+        <p>Limit Edge - Presentation Slides | Alexander Aryanfar</p>
+        <p class="mt-1">Contact: alexander.aryanfar@gmail.com | @limitedgeshow | +1 (705) 970-0443</p>
+    </footer>
+
+</body>
+</html>

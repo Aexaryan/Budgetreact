@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contingency & Investor Benefits - Limit Edge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-gray-800">
+
+    <!-- Professional Navigation -->
+    <nav class="professional-nav text-white p-4">
+        <div class="nav-container flex justify-between items-center">
+            <a href="index.html" class="nav-brand">
+                <img src="logo.jpg" alt="Limit Edge Logo" class="h-8 w-auto mr-3">
+                Limit Edge Reality Show
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link-pro home-link">Home</a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle active">
+                        Budget
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Budget Management</div>
+                        <a href="budget-overview.html" class="dropdown-item">Overview</a>
+                        <a href="pre-production.html" class="dropdown-item">Pre-Production</a>
+                        <a href="production.html" class="dropdown-item">Production</a>
+                        <a href="post-production.html" class="dropdown-item">Post-Production</a>
+                        <a href="marketing.html" class="dropdown-item">Marketing</a>
+                        <a href="contingency.html" class="dropdown-item">Contingency</a>
+                        <a href="accounting-system.html" class="dropdown-item">Accounting System</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Business
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Business & Investment</div>
+                        <a href="investor-benefits.html" class="dropdown-item">Investor Benefits</a>
+                        <a href="teaser-pilot.html" class="dropdown-item">Teaser & Pilot</a>
+                        <a href="participant-requirements.html" class="dropdown-item">Participant Requirements</a>
+                        <a href="the-challenge.html" class="dropdown-item">The Challenge</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="presentation-slides.html" class="nav-link-pro">Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
+
+    <header class="bg-[#9E9E9E] text-white p-8 text-center shadow-lg">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">CONTINGENCY FUND</h1>
+        <p class="mt-2 text-xl font-bold">RISK MANAGEMENT & FINANCIAL SAFETY</p>
+        <p class="mt-4 text-lg text-white">Contingency Fund: $50,400 (13.53% of overall budget)</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="text-center my-12">
+            <h2 class="text-5xl md:text-6xl font-black text-[#9E9E9E] tracking-tighter my-4">$50,400</h2>
+            <p class="max-w-4xl mx-auto text-gray-600 text-lg">
+                A contingency fund of **$50,400** is crucial for mitigating risks and ensuring project completion. Additionally, we provide a clear value proposition for investors including extensive brand exposure, measurable ROI, and comprehensive performance tracking.
+            </p>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Contingency Fund Allocation</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-6 rounded-lg bg-[#f9f5f1] border border-gray-200">
+                    <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Emergency & Unforeseen Costs</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Emergency repairs and replacements</li>
+                        <li>Unforeseen production delays</li>
+                        <li>Additional marketing opportunities</li>
+                        <li>Extra crew hiring needs</li>
+                        <li>Equipment failures or issues</li>
+                        <li>Last-minute travel changes</li>
+                        <li>Additional legal fees incurred</li>
+                        <li>Unexpected location changes</li>
+                        <li>Contingency for weather impacts</li>
+                        <li>Other miscellaneous unforeseen expenses</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-lg bg-[#f9f5f1] border border-gray-200">
+                    <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Risk Mitigation Areas</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Production schedule overruns</li>
+                        <li>Equipment rental extensions</li>
+                        <li>Additional accommodation needs</li>
+                        <li>Extended post-production timeline</li>
+                        <li>Marketing campaign expansion</li>
+                        <li>Legal and compliance requirements</li>
+                        <li>Insurance claim deductibles</li>
+                        <li>Currency fluctuation impacts</li>
+                        <li>Vendor and supplier issues</li>
+                        <li>Technology and software updates</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Risk Management Strategy</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Identified Risks</h4>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
+                            <h5 class="font-semibold text-red-800">High Risk</h5>
+                            <p class="text-sm text-red-700">Weather delays, equipment failures, location access issues</p>
+                        </div>
+                        <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                            <h5 class="font-semibold text-yellow-800">Medium Risk</h5>
+                            <p class="text-sm text-yellow-700">Schedule overruns, talent availability, budget variances</p>
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <h5 class="font-semibold text-green-800">Low Risk</h5>
+                            <p class="text-sm text-green-700">Marketing performance, audience engagement, content quality</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Mitigation Strategies</h4>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Comprehensive insurance coverage for all production elements</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Backup equipment and alternative location options</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Flexible scheduling with built-in buffer time</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Regular progress monitoring and budget tracking</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Professional legal and compliance oversight</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Contact Information</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">📧</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Email</h4>
+                    <p class="text-gray-700">alexander.aryanfar@gmail.com</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">📱</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Social Media</h4>
+                    <p class="text-gray-700">@limitedgeshow</p>
+                </div>
+                <div class="p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">📞</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Phone</h4>
+                    <p class="text-gray-700">+1 (705) 970-0443</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Project Success Metrics</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-3xl font-black text-[#9E9E9E] mb-2">95%</div>
+                    <div class="text-gray-600 font-medium">Budget Adherence</div>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-3xl font-black text-[#9E9E9E] mb-2">100%</div>
+                    <div class="text-gray-600 font-medium">Timeline Compliance</div>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-3xl font-black text-[#9E9E9E] mb-2">500K+</div>
+                    <div class="text-gray-600 font-medium">Social Media Reach</div>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-3xl font-black text-[#9E9E9E] mb-2">10M+</div>
+                    <div class="text-gray-600 font-medium">Target Viewership</div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer class="bg-[#2B2E4A] text-white p-6 text-center text-sm">
+        <p>Limit Edge - Contingency Fund | Alexander Aryanfar</p>
+        <p class="mt-1">Contact: alexander.aryanfar@gmail.com | @limitedgeshow | +1 (705) 970-0443</p>
+    </footer>
+
+</body>
+</html>

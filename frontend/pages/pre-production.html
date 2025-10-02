@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Production - Limit Edge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <style>
+        /* Inline fallback styles for Git hosting */
+        .professional-nav {
+            background: linear-gradient(135deg, #2B2E4A 0%, #1a1d2e 100%) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+            width: 100% !important;
+        }
+        
+        .nav-container {
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            padding: 0 1rem !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        
+        .nav-brand {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-decoration: none !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-menu {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-link-pro {
+            color: white !important;
+            text-decoration: none !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 0.5rem !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.25rem !important;
+            white-space: nowrap !important;
+            cursor: pointer !important;
+        }
+        
+        .nav-link-pro:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E3B330 !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .nav-link-pro.active {
+            background-color: #E3B330 !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(227, 179, 48, 0.3) !important;
+        }
+        
+        .nav-link-pro.home-link {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .nav-link-pro.home-link:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .nav-link-pro.home-link.active {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            color: #E3B330 !important;
+        }
+        
+        .dropdown {
+            position: relative !important;
+        }
+        
+        .dropdown-toggle::after {
+            content: '▾' !important;
+            font-size: 0.75rem !important;
+            transition: transform 0.3s ease !important;
+        }
+        
+        .dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg) !important;
+        }
+        
+        .dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            background: white !important;
+            border-radius: 0.5rem !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            min-width: 200px !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(-10px) !important;
+            transition: all 0.3s ease !important;
+            z-index: 1001 !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+        
+        .dropdown-item {
+            display: block !important;
+            padding: 0.75rem 1rem !important;
+            color: #2B2E4A !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.2s ease !important;
+            font-weight: 500 !important;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa !important;
+            color: #E3B330 !important;
+            padding-left: 1.25rem !important;
+        }
+        
+        .dropdown-header {
+            padding: 0.75rem 1rem !important;
+            font-weight: 700 !important;
+            color: #2B2E4A !important;
+            background-color: #f8f9fa !important;
+            border-bottom: 2px solid #E3B330 !important;
+            border-top-left-radius: 0.5rem !important;
+            border-top-right-radius: 0.5rem !important;
+            font-size: 0.875rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none !important;
+            background: none !important;
+            border: none !important;
+            color: white !important;
+            font-size: 1.5rem !important;
+            cursor: pointer !important;
+            padding: 0.5rem !important;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none !important;
+                position: absolute !important;
+                top: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: #2B2E4A !important;
+                flex-direction: column !important;
+                padding: 1rem !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            }
+            
+            .nav-menu.active {
+                display: flex !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: block !important;
+            }
+            
+            .dropdown-menu {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                box-shadow: none !important;
+                background: rgba(255, 255, 255, 0.05) !important;
+                margin-top: 0.5rem !important;
+                border-radius: 0.25rem !important;
+            }
+            
+            .dropdown-item {
+                color: white !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: #E3B330 !important;
+            }
+            
+            .dropdown-header {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: white !important;
+                border-bottom: 2px solid #E3B330 !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Professional Navigation -->
+    <nav class="professional-nav text-white p-4">
+        <div class="nav-container flex justify-between items-center">
+            <a href="index.html" class="nav-brand">
+                <img src="logo.jpg" alt="Limit Edge Logo" class="h-8 w-auto mr-3">
+                Limit Edge Reality Show
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link-pro home-link">Home</a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle active">
+                        Budget
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Budget Management</div>
+                        <a href="budget-overview.html" class="dropdown-item">Overview</a>
+                        <a href="pre-production.html" class="dropdown-item">Pre-Production</a>
+                        <a href="production.html" class="dropdown-item">Production</a>
+                        <a href="post-production.html" class="dropdown-item">Post-Production</a>
+                        <a href="marketing.html" class="dropdown-item">Marketing</a>
+                        <a href="contingency.html" class="dropdown-item">Contingency</a>
+                        <a href="accounting-system.html" class="dropdown-item">Accounting System</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Business
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Business & Investment</div>
+                        <a href="investor-benefits.html" class="dropdown-item">Investor Benefits</a>
+                        <a href="teaser-pilot.html" class="dropdown-item">Teaser & Pilot</a>
+                        <a href="participant-requirements.html" class="dropdown-item">Participant Requirements</a>
+                        <a href="the-challenge.html" class="dropdown-item">The Challenge</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="presentation-slides.html" class="nav-link-pro">Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
+
+    <header class="bg-[#E3B330] text-white p-8 text-center shadow-lg">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">PRE-PRODUCTION</h1>
+        <p class="mt-2 text-xl font-bold">FOUNDATION & PLANNING PHASE</p>
+        <p class="mt-4 text-lg text-white">Total Budget: $33,000 (8.86% of overall budget)</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="text-center my-12">
+            <h2 class="text-5xl md:text-6xl font-black text-[#E3B330] tracking-tighter my-4">$33,000</h2>
+            <p class="max-w-4xl mx-auto text-gray-600 text-lg">
+                The pre-production phase is crucial for laying the groundwork for a successful reality show. This **$33,000** investment ensures proper planning, talent acquisition, location preparation, and obstacle design before filming begins.
+            </p>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Pre-Production Budget Breakdown</h3>
+            <div class="chart-container h-[400px]">
+                <canvas id="preProductionChart"></canvas>
+            </div>
+            <p class="mt-6 text-gray-600 text-center max-w-2xl mx-auto">
+                **Set & Obstacle Design** receives the largest allocation at **$12,000** (36.36%), ensuring unique and challenging competition elements. **Travel** and **Marketing Prep** each receive **$7,000** (21.21%) for location scouting and promotional materials.
+            </p>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#E3B330] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Set & Obstacle Design</h4>
+                </div>
+                <div class="text-3xl font-black text-[#E3B330] mb-2">$12,000</div>
+                <p class="text-gray-600 mb-4">36.36% of pre-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Custom obstacle course design and engineering</li>
+                    <li>• Safety equipment and testing</li>
+                    <li>• Construction materials and labor</li>
+                    <li>• Technical specifications and blueprints</li>
+                    <li>• Prototype development and testing</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#D86A36] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Travel</h4>
+                </div>
+                <div class="text-3xl font-black text-[#D86A36] mb-2">$7,000</div>
+                <p class="text-gray-600 mb-4">21.21% of pre-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Location scouting trips to Torrevieja, Spain</li>
+                    <li>• Site visits and assessments</li>
+                    <li>• Local transportation and accommodation</li>
+                    <li>• Permit application meetings</li>
+                    <li>• Vendor and supplier meetings</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#39A57D] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Marketing Prep</h4>
+                </div>
+                <div class="text-3xl font-black text-[#39A57D] mb-2">$7,000</div>
+                <p class="text-gray-600 mb-4">21.21% of pre-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Teaser video production</li>
+                    <li>• Promotional materials design</li>
+                    <li>• Brand identity development</li>
+                    <li>• Social media content creation</li>
+                    <li>• Press kit preparation</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#5D6D93] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Pre-Shoot Planning</h4>
+                </div>
+                <div class="text-3xl font-black text-[#5D6D93] mb-2">$5,000</div>
+                <p class="text-gray-600 mb-4">15.15% of pre-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Production meetings and coordination</li>
+                    <li>• Administrative setup and logistics</li>
+                    <li>• Schedule development and timeline planning</li>
+                    <li>• Crew coordination and communication</li>
+                    <li>• Documentation and paperwork</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#9E9E9E] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Casting & Selection</h4>
+                </div>
+                <div class="text-3xl font-black text-[#9E9E9E] mb-2">$2,000</div>
+                <p class="text-gray-600 mb-4">6.06% of pre-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Athlete recruitment and screening</li>
+                    <li>• Application processing and interviews</li>
+                    <li>• Background checks and verification</li>
+                    <li>• Contract negotiations and agreements</li>
+                    <li>• Final selection and onboarding</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Pre-Production Timeline</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-[#E3B330] rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">1</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Weeks 1-2</h4>
+                    <h5 class="font-semibold text-[#E3B330] mb-3">Initial Planning</h5>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Project kickoff meetings</li>
+                        <li>• Budget finalization</li>
+                        <li>• Team assembly</li>
+                        <li>• Initial location research</li>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-[#E3B330] rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">2</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Weeks 3-4</h4>
+                    <h5 class="font-semibold text-[#E3B330] mb-3">Design & Casting</h5>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Obstacle course design</li>
+                        <li>• Athlete recruitment</li>
+                        <li>• Location scouting trips</li>
+                        <li>• Marketing material creation</li>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-[#E3B330] rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">3</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Weeks 5-6</h4>
+                    <h5 class="font-semibold text-[#E3B330] mb-3">Final Preparation</h5>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Final approvals and permits</li>
+                        <li>• Equipment procurement</li>
+                        <li>• Crew finalization</li>
+                        <li>• Production readiness check</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Key Deliverables</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Production Assets</h4>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-[#E3B330] mr-2">✓</span>
+                            <span>Complete obstacle course design and specifications</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#E3B330] mr-2">✓</span>
+                            <span>Finalized location agreements and permits</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#E3B330] mr-2">✓</span>
+                            <span>Selected and contracted athlete roster</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#E3B330] mr-2">✓</span>
+                            <span>Production schedule and timeline</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Marketing Materials</h4>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-[#E3B330] mr-2">✓</span>
+                            <span>Professional teaser video</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#E3B330] mr-2">✓</span>
+                            <span>Brand identity and logo package</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#E3B330] mr-2">✓</span>
+                            <span>Social media content library</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#E3B330] mr-2">✓</span>
+                            <span>Press kit and promotional materials</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer class="bg-[#2B2E4A] text-white p-6 text-center text-sm">
+        <p>Limit Edge - Pre-Production Phase | Alexander Aryanfar</p>
+        <p class="mt-1">Contact: alexander.aryanfar@gmail.com | @limitedgeshow | +1 (705) 970-0443</p>
+    </footer>
+
+    <script>
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#2B2E4A',
+                        font: { size: 12 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = context.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                            const percentage = (context.parsed / total * 100).toFixed(1) + '%';
+                            return `${context.label}: $${context.parsed.toLocaleString()} (${percentage})`;
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('preProductionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Set & Obstacle Design', 'Travel', 'Marketing Prep', 'Pre-Shoot Planning', 'Casting & Selection'],
+                datasets: [{
+                    label: 'Pre-Production Budget',
+                    data: [12000, 7000, 7000, 5000, 2000],
+                    backgroundColor: [
+                        '#E3B330',
+                        '#D86A36',
+                        '#39A57D',
+                        '#5D6D93',
+                        '#9E9E9E'
+                    ],
+                    borderColor: '#fce8d5',
+                    borderWidth: 5,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                ...chartOptions,
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+</html>

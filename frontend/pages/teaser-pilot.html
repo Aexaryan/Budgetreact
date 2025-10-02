@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teaser & Pilot - Limit Edge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <style>
+        /* Inline fallback styles for Git hosting */
+        .professional-nav {
+            background: linear-gradient(135deg, #2B2E4A 0%, #1a1d2e 100%) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+            width: 100% !important;
+        }
+        
+        .nav-container {
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            padding: 0 1rem !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        
+        .nav-brand {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-decoration: none !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-menu {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-link-pro {
+            color: white !important;
+            text-decoration: none !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 0.5rem !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.25rem !important;
+            white-space: nowrap !important;
+            cursor: pointer !important;
+        }
+        
+        .nav-link-pro:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E3B330 !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .nav-link-pro.active {
+            background-color: #E3B330 !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(227, 179, 48, 0.3) !important;
+        }
+        
+        .nav-link-pro.home-link {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .nav-link-pro.home-link:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .nav-link-pro.home-link.active {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            color: #E3B330 !important;
+        }
+        
+        .dropdown {
+            position: relative !important;
+        }
+        
+        .dropdown-toggle::after {
+            content: '▾' !important;
+            font-size: 0.75rem !important;
+            transition: transform 0.3s ease !important;
+        }
+        
+        .dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg) !important;
+        }
+        
+        .dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            background: white !important;
+            border-radius: 0.5rem !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            min-width: 200px !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(-10px) !important;
+            transition: all 0.3s ease !important;
+            z-index: 1001 !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+        
+        .dropdown-item {
+            display: block !important;
+            padding: 0.75rem 1rem !important;
+            color: #2B2E4A !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.2s ease !important;
+            font-weight: 500 !important;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa !important;
+            color: #E3B330 !important;
+            padding-left: 1.25rem !important;
+        }
+        
+        .dropdown-header {
+            padding: 0.75rem 1rem !important;
+            font-weight: 700 !important;
+            color: #2B2E4A !important;
+            background-color: #f8f9fa !important;
+            border-bottom: 2px solid #E3B330 !important;
+            border-top-left-radius: 0.5rem !important;
+            border-top-right-radius: 0.5rem !important;
+            font-size: 0.875rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none !important;
+            background: none !important;
+            border: none !important;
+            color: white !important;
+            font-size: 1.5rem !important;
+            cursor: pointer !important;
+            padding: 0.5rem !important;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none !important;
+                position: absolute !important;
+                top: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: #2B2E4A !important;
+                flex-direction: column !important;
+                padding: 1rem !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            }
+            
+            .nav-menu.active {
+                display: flex !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: block !important;
+            }
+            
+            .dropdown-menu {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                box-shadow: none !important;
+                background: rgba(255, 255, 255, 0.05) !important;
+                margin-top: 0.5rem !important;
+                border-radius: 0.25rem !important;
+            }
+            
+            .dropdown-item {
+                color: white !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: #E3B330 !important;
+            }
+            
+            .dropdown-header {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: white !important;
+                border-bottom: 2px solid #E3B330 !important;
+            }
+        }
+    </style>
+    <style>
+        .team-button.active#alexanderBtn {
+            background-color: #3B82F6 !important;
+            color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .team-button.active#chrisBtn {
+            background-color: #10B981 !important;
+            color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
+        .team-button.active#mustPayBtn {
+            background-color: #EF4444 !important;
+            color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+        
+        .team-button:hover {
+            transform: scale(1.02);
+        }
+        
+        .text-team-alexander { color: #3B82F6; }
+        .text-team-chris { color: #10B981; }
+        .text-team-must-pay { color: #EF4444; }
+        
+        .team-button.active#alexanderBtn {
+            background-color: #3B82F6 !important;
+            color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .team-button.active#chrisBtn {
+            background-color: #10B981 !important;
+            color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
+        .team-button.active#mustPayBtn {
+            background-color: #EF4444 !important;
+            color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+        
+        .team-button:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="text-[#0B2D48]">
+
+    <!-- Professional Navigation -->
+    <nav class="professional-nav text-white p-4">
+        <div class="nav-container flex justify-between items-center">
+            <a href="index.html" class="nav-brand">
+                <img src="logo.jpg" alt="Limit Edge Logo" class="h-8 w-auto mr-3">
+                Limit Edge Reality Show
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link-pro home-link">Home</a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Budget
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Budget Management</div>
+                        <a href="budget-overview.html" class="dropdown-item">Overview</a>
+                        <a href="pre-production.html" class="dropdown-item">Pre-Production</a>
+                        <a href="production.html" class="dropdown-item">Production</a>
+                        <a href="post-production.html" class="dropdown-item">Post-Production</a>
+                        <a href="marketing.html" class="dropdown-item">Marketing</a>
+                        <a href="contingency.html" class="dropdown-item">Contingency</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle active">
+                        Business
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Business & Investment</div>
+                        <a href="investor-benefits.html" class="dropdown-item">Investor Benefits</a>
+                        <a href="teaser-pilot.html" class="dropdown-item">Teaser & Pilot</a>
+                        <a href="participant-requirements.html" class="dropdown-item">Participant Requirements</a>
+                        <a href="the-challenge.html" class="dropdown-item">The Challenge</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="presentation-slides.html" class="nav-link-pro">Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
+
+    <header class="bg-[#0B2D48] text-white p-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">Crafting a Vision: Teaser & Pilot</h1>
+        <p class="mt-4 text-lg text-gray-300">A Strategic Financial Blueprint for a High-Impact Launch</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="text-center mb-12">
+            <p class="text-lg text-[#205375]">Total Project Budget</p>
+            <h2 class="text-7xl md:text-8xl font-black text-[#0B2D48] tracking-tighter my-2">$20,000</h2>
+            <p class="max-w-3xl mx-auto text-gray-600">
+                This infographic details the strategic allocation of a $20,000 budget designed to maximize production quality, ensure a polished final product, and successfully attract investors and broadcasters for a full series commission.
+            </p>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12 items-center">
+            <div class="md:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-bold mb-1">High-Level Budget Allocation</h3>
+                <p class="text-gray-600 mb-4">The budget is primarily dedicated to the production phase, ensuring the highest possible visual and auditory quality. Post-production receives a significant share to guarantee a broadcast-ready polish, with foundational pre-production and essential marketing efforts rounding out the plan.</p>
+                <div class="chart-container h-[350px] md:h-[400px]">
+                    <canvas id="mainAllocationChart"></canvas>
+                </div>
+            </div>
+            <div class="md:col-span-2 space-y-4">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <p class="text-4xl font-black text-[#205375]">50%</p>
+                    <h4 class="text-xl font-bold">Production Focus</h4>
+                    <p class="text-gray-600">The majority of funds are invested directly into filming to achieve superior quality.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <p class="text-4xl font-black text-[#5D93B4]">25%</p>
+                    <h4 class="text-xl font-bold">Post-Production Polish</h4>
+                    <p class="text-gray-600">A dedicated quarter of the budget ensures professional editing, sound, and effects.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md p-6">
+                    <p class="text-4xl font-black text-[#F6B60D]">5%</p>
+                    <h4 class="text-xl font-bold">Marketing & Safety Net</h4>
+                    <p class="text-gray-600">A crucial allocation for promotion and covering unforeseen expenses.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="bg-white rounded-lg shadow-md p-6 mb-12 text-center">
+            <h3 class="text-2xl font-bold mb-4">Team Expense Tracker</h3>
+            <p class="text-gray-600 mb-4">Select a team and click on a bar in any of the charts below to assign that expense.</p>
+            <div id="statusMessage" class="h-6 text-red-500 font-semibold mb-4"></div>
+            <div class="flex flex-col md:flex-row justify-center gap-4 mb-8">
+                <button id="alexanderBtn" class="team-button bg-gray-200 text-[#0B2D48] font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 hover:bg-gray-300">
+                    Alexander
+                </button>
+                <button id="chrisBtn" class="team-button bg-gray-200 text-[#0B2D48] font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 hover:bg-gray-300">
+                    Chris
+                </button>
+                <button id="mustPayBtn" class="team-button bg-gray-200 text-[#0B2D48] font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 hover:bg-gray-300">
+                    MUST PAY
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gray-100 rounded-lg p-4 shadow-inner">
+                    <h4 class="text-lg font-semibold text-[#0B2D48]">Alexander's Budget</h4>
+                    <p id="alexanderBudget" class="text-3xl font-black text-team-alexander">$0</p>
+                    <ul id="alexanderExpensesList" class="mt-4 text-left text-sm text-gray-700 space-y-1"></ul>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-4 shadow-inner">
+                    <h4 class="text-lg font-semibold text-[#0B2D48]">Chris's Budget</h4>
+                    <p id="chrisBudget" class="text-3xl font-black text-team-chris">$0</p>
+                    <ul id="chrisExpensesList" class="mt-4 text-left text-sm text-gray-700 space-y-1"></ul>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-4 shadow-inner">
+                    <h4 class="text-lg font-semibold text-[#0B2D48]">MUST PAY Budget</h4>
+                    <p id="mustPayBudget" class="text-3xl font-black text-team-must-pay">$0</p>
+                    <ul id="mustPayExpensesList" class="mt-4 text-left text-sm text-gray-700 space-y-1"></ul>
+                </div>
+            </div>
+            <div class="mt-8 bg-gray-100 rounded-lg p-4 shadow-inner">
+                <h4 class="text-lg font-semibold text-[#0B2D48]">Total Assigned Budget</h4>
+                <p id="totalAssignedBudget" class="text-5xl font-black text-[#0B2D48]">$0</p>
+            </div>
+        </section>
+
+
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-12">
+            <h3 class="text-2xl font-bold mb-1 text-center">Phase-by-Phase Investment</h3>
+             <p class="text-gray-600 mb-8 text-center max-w-3xl mx-auto">Each production phase has a tailored budget to address its unique requirements, from initial creative development to the final marketing push. This granular approach ensures no critical area is underfunded.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold">Phase 1: Pre-Production ($4,000)</h4>
+                    <p class="text-gray-600 mb-4">Building the foundation. This stage is all about planning, writing, and casting to ensure a smooth production phase. The largest portion goes to script development and securing talent.</p>
+                    <div class="chart-container">
+                        <canvas id="preProductionChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold">Phase 2: Production ($10,000)</h4>
+                    <p class="text-gray-600 mb-4">Capturing the vision. This is where the story comes to life. The budget prioritizes high-quality cameras, equipment, and a skilled crew to deliver stunning visuals and crisp audio.</p>
+                    <div class="chart-container">
+                        <canvas id="productionChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold">Phase 3: Post-Production ($5,000)</h4>
+                    <p class="text-gray-600 mb-4">Polishing the final product. Editing is the most significant investment here, shaping the narrative, followed by essential sound design, color grading, and music to create a cinematic feel.</p>
+                    <div class="chart-container">
+                        <canvas id="postProductionChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold">Phase 4: Marketing & Contingency ($1,000)</h4>
+                    <p class="text-gray-600 mb-4">Reaching the audience. A targeted budget for social media promotion to generate buzz, with a safety buffer included for any unexpected challenges during the project lifecycle.</p>
+                    <div class="chart-container">
+                        <canvas id="marketingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="text-center mb-12">
+            <h3 class="text-2xl font-bold mb-1">Our Strategic Pillars</h3>
+            <p class="text-gray-600 mb-8 max-w-3xl mx-auto">This budget isn't just a list of expenses; it's a strategy built on three core principles to maximize the return on investment and ensure the project's success.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-4xl mb-2">🎬</div>
+                    <h4 class="text-xl font-bold">Prioritize Production Quality</h4>
+                    <p class="text-gray-600">By allocating half the budget to production, we commit to a high-quality look and feel that meets industry standards and captivates audiences.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-4xl mb-2">✨</div>
+                    <h4 class="text-xl font-bold">Ensure Professional Polish</h4>
+                    <p class="text-gray-600">A significant investment in post-production guarantees the teaser and pilot are broadcast-ready, showcasing the project's full potential.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-4xl mb-2">🚀</div>
+                    <h4 class="text-xl font-bold">Drive Investor Interest</h4>
+                    <p class="text-gray-600">Strategic spending on promotion is designed to attract the attention of investors and broadcasters, paving the way for a full series order.</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer class="bg-[#0B2D48] text-white p-6 text-center text-sm">
+        <p>Strategic Budget Plan for Teaser & Pilot Production. Total Budget: $20,000.</p>
+    </footer>
+
+    <script>
+        const wrapLabel = (label, maxLength = 16) => {
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const chartColors = {
+            darkBlue: '#0B2D48',
+            mediumBlue: '#205375',
+            lightBlue: '#5D93B4',
+            accent: '#F6B60D',
+            lightGray: '#E0E0E0'
+        };
+        
+        const teamColors = {
+            'Alexander': '#3B82F6',
+            'Chris': '#10B981',
+            'Must Pay': '#EF4444'
+        };
+
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                     labels: {
+                        color: chartColors.darkBlue,
+                        font: { size: 12 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const budgetData = {
+            'Pre-Production': {
+                'Concept Development & Script Writing': 600,
+                'Casting': 1500,
+                'Location Scouting & Permits & Rent': 1500,
+                'Production Planning': 400
+            },
+            'Production': {
+                'Director & Cinematographer Fees': 2100,
+                'Camera & Equipment Rental': 2700,
+                'Crew Salaries': 1800,
+                'Set Design / Props': 1200,
+                'Transportation & Logistics': 600,
+                'Food & Accommodation': 600,
+                'Onsite Management': 1000
+            },
+            'Post-Production': {
+                'Editing': 1200,
+                'Sound Design & Mixing': 1000,
+                'Music Licensing / Original Score': 1000,
+                'Color Grading': 600,
+                'Graphics, Titles & VFX': 1200
+            },
+            'Marketing & Contingency': {
+                'Teaser Promotion': 667,
+                'Contingency Buffer': 333
+            }
+        };
+
+        let appState = {
+            selectedTeam: null,
+            alexander: { total: 0, expenses: [] },
+            chris: { total: 0, expenses: [] },
+            mustPay: { total: 0, expenses: [] },
+            assignedItems: new Set()
+        };
+
+        let charts = {};
+
+        const updateUI = () => {
+            document.getElementById('alexanderBudget').textContent = `$${appState.alexander.total}`;
+            document.getElementById('chrisBudget').textContent = `$${appState.chris.total}`;
+            document.getElementById('mustPayBudget').textContent = `$${appState.mustPay.total}`;
+            
+            const totalAssigned = appState.alexander.total + appState.chris.total + appState.mustPay.total;
+            document.getElementById('totalAssignedBudget').textContent = `$${totalAssigned}`;
+
+            const alexanderList = document.getElementById('alexanderExpensesList');
+            const chrisList = document.getElementById('chrisExpensesList');
+            const mustPayList = document.getElementById('mustPayExpensesList');
+
+            alexanderList.innerHTML = '';
+            appState.alexander.expenses.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.label}: $${item.value}`;
+                alexanderList.appendChild(li);
+            });
+
+            chrisList.innerHTML = '';
+            appState.chris.expenses.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.label}: $${item.value}`;
+                chrisList.appendChild(li);
+            });
+
+            mustPayList.innerHTML = '';
+            appState.mustPay.expenses.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.label}: $${item.value}`;
+                mustPayList.appendChild(li);
+            });
+        };
+
+        const renderCharts = () => {
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+            const initialColors = {};
+
+            initialColors['Pre-Production'] = Object.keys(budgetData['Pre-Production']).map(() => chartColors.accent);
+            initialColors['Production'] = Object.keys(budgetData['Production']).map(() => chartColors.mediumBlue);
+            initialColors['Post-Production'] = Object.keys(budgetData['Post-Production']).map(() => chartColors.lightBlue);
+            initialColors['Marketing & Contingency'] = [chartColors.lightGray, chartColors.darkBlue];
+
+            charts.mainAllocation = new Chart(document.getElementById('mainAllocationChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Production', 'Post-Production', 'Pre-Production', 'Marketing & Contingency'],
+                    datasets: [{
+                        label: 'Budget Allocation',
+                        data: [16500, 8250, 6600, 1650],
+                        backgroundColor: [
+                            chartColors.mediumBlue,
+                            chartColors.lightBlue,
+                            chartColors.accent,
+                            chartColors.lightGray
+                        ],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                     cutout: '60%',
+                }
+            });
+
+            charts.preProduction = new Chart(document.getElementById('preProductionChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(budgetData['Pre-Production']).map(l => wrapLabel(l)),
+                    datasets: [{
+                        label: 'Cost ($)',
+                        data: Object.values(budgetData['Pre-Production']),
+                        backgroundColor: initialColors['Pre-Production'],
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                    indexAxis: 'y',
+                     plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) { return '$' + value / 1000 + 'k'; }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => handleChartClick(event, 'Pre-Production', charts.preProduction)
+                }
+            });
+            
+            charts.production = new Chart(document.getElementById('productionChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(budgetData['Production']).map(l => wrapLabel(l)),
+                    datasets: [{
+                        label: 'Cost ($)',
+                        data: Object.values(budgetData['Production']),
+                        backgroundColor: initialColors['Production'],
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                     plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) { return '$' + value / 1000 + 'k'; }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => handleChartClick(event, 'Production', charts.production)
+                }
+            });
+
+            charts.postProduction = new Chart(document.getElementById('postProductionChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(budgetData['Post-Production']).map(l => wrapLabel(l)),
+                    datasets: [{
+                        label: 'Cost ($)',
+                        data: Object.values(budgetData['Post-Production']),
+                        backgroundColor: initialColors['Post-Production'],
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) { return '$' + value / 1000 + 'k'; }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => handleChartClick(event, 'Post-Production', charts.postProduction)
+                }
+            });
+
+            charts.marketing = new Chart(document.getElementById('marketingChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(budgetData['Marketing & Contingency']).map(l => wrapLabel(l)),
+                    datasets: [{
+                        label: 'Cost ($)',
+                        data: Object.values(budgetData['Marketing & Contingency']),
+                        backgroundColor: initialColors['Marketing & Contingency'],
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                               callback: function(value) { return '$' + value; }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => handleChartClick(event, 'Marketing & Contingency', charts.marketing)
+                }
+            });
+        };
+
+        const handleChartClick = (event, phase, chart) => {
+            const activeElements = chart.getElementsAtEventForMode(event, 'nearest', 'intersect', true);
+            if (!activeElements || activeElements.length === 0) {
+                return;
+            }
+
+            if (!appState.selectedTeam) {
+                document.getElementById('statusMessage').textContent = 'Please select a team first (Alexander, Chris or MUST PAY).';
+                setTimeout(() => document.getElementById('statusMessage').textContent = '', 3000);
+                return;
+            }
+
+            const elementIndex = activeElements[0].index;
+            const originalLabels = Object.keys(budgetData[phase]);
+            const label = originalLabels[elementIndex];
+            const value = chart.data.datasets[0].data[elementIndex];
+
+            if (appState.assignedItems.has(label)) {
+                return;
+            }
+
+            appState.assignedItems.add(label);
+            
+            const item = { label: label, value: value };
+
+            if (appState.selectedTeam === 'Alexander') {
+                appState.alexander.total += value;
+                appState.alexander.expenses.push(item);
+            } else if (appState.selectedTeam === 'Chris') {
+                appState.chris.total += value;
+                appState.chris.expenses.push(item);
+            } else if (appState.selectedTeam === 'Must Pay') {
+                appState.mustPay.total += value;
+                appState.mustPay.expenses.push(item);
+            }
+
+            const teamColor = teamColors[appState.selectedTeam];
+            chart.data.datasets[0].backgroundColor[elementIndex] = teamColor;
+
+            updateUI();
+            chart.update();
+        };
+
+        const clearButtonActiveClass = () => {
+            document.getElementById('alexanderBtn').classList.remove('active');
+            document.getElementById('chrisBtn').classList.remove('active');
+            document.getElementById('mustPayBtn').classList.remove('active');
+        };
+
+        document.getElementById('alexanderBtn').addEventListener('click', () => {
+            appState.selectedTeam = 'Alexander';
+            clearButtonActiveClass();
+            document.getElementById('alexanderBtn').classList.add('active');
+            document.getElementById('statusMessage').textContent = '';
+        });
+
+        document.getElementById('chrisBtn').addEventListener('click', () => {
+            appState.selectedTeam = 'Chris';
+            clearButtonActiveClass();
+            document.getElementById('chrisBtn').classList.add('active');
+            document.getElementById('statusMessage').textContent = '';
+        });
+
+        document.getElementById('mustPayBtn').addEventListener('click', () => {
+            appState.selectedTeam = 'Must Pay';
+            clearButtonActiveClass();
+            document.getElementById('mustPayBtn').classList.add('active');
+            document.getElementById('statusMessage').textContent = '';
+        });
+
+        window.onload = () => {
+            renderCharts();
+            updateUI();
+        };
+    </script>
+</body>
+</html>

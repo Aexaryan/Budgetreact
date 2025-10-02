@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounting System - Limit Edge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <style>
+        /* Password Protection Styles */
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2B2E4A 0%, #1a1d2e 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .password-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #E3B330;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background: #E3B330;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: #D4A02A;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Professional Navigation Styles */
+        .professional-nav {
+            background: linear-gradient(135deg, #2B2E4A 0%, #1a1d2e 100%) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+            width: 100% !important;
+        }
+        
+        .nav-container {
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            padding: 0 1rem !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        
+        .nav-brand {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            text-decoration: none !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-menu {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .nav-link-pro {
+            color: white !important;
+            text-decoration: none !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 0.5rem !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.25rem !important;
+            white-space: nowrap !important;
+            cursor: pointer !important;
+        }
+        
+        .nav-link-pro:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #E3B330 !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .nav-link-pro.active {
+            background-color: #E3B330 !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(227, 179, 48, 0.3) !important;
+        }
+        
+        .nav-link-pro.home-link {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .nav-link-pro.home-link:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .nav-link-pro.home-link.active {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            color: #E3B330 !important;
+        }
+        
+        .dropdown {
+            position: relative !important;
+        }
+        
+        .dropdown-toggle::after {
+            content: '▾' !important;
+            font-size: 0.75rem !important;
+            transition: transform 0.3s ease !important;
+        }
+        
+        .dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg) !important;
+        }
+        
+        .dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            background: white !important;
+            border-radius: 0.5rem !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            min-width: 200px !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(-10px) !important;
+            transition: all 0.3s ease !important;
+            z-index: 1001 !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+        
+        .dropdown-item {
+            display: block !important;
+            padding: 0.75rem 1rem !important;
+            color: #2B2E4A !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.2s ease !important;
+            font-weight: 500 !important;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa !important;
+            color: #E3B330 !important;
+            padding-left: 1.25rem !important;
+        }
+        
+        .dropdown-header {
+            padding: 0.75rem 1rem !important;
+            font-weight: 700 !important;
+            color: #2B2E4A !important;
+            background-color: #f8f9fa !important;
+            border-bottom: 2px solid #E3B330 !important;
+            border-top-left-radius: 0.5rem !important;
+            border-top-right-radius: 0.5rem !important;
+            font-size: 0.875rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none !important;
+            background: none !important;
+            border: none !important;
+            color: white !important;
+            font-size: 1.5rem !important;
+            cursor: pointer !important;
+            padding: 0.5rem !important;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none !important;
+                position: absolute !important;
+                top: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: #2B2E4A !important;
+                flex-direction: column !important;
+                padding: 1rem !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+            }
+            
+            .nav-menu.active {
+                display: flex !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: block !important;
+            }
+            
+            .dropdown-menu {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                box-shadow: none !important;
+                background: rgba(255, 255, 255, 0.05) !important;
+                margin-top: 0.5rem !important;
+                border-radius: 0.25rem !important;
+            }
+            
+            .dropdown-item {
+                color: white !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: #E3B330 !important;
+            }
+            
+            .dropdown-header {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: white !important;
+                border-bottom: 2px solid #E3B330 !important;
+            }
+        }
+        
+        /* Accounting System Styles */
+        .accounting-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .expense-form {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #E3B330;
+            box-shadow: 0 0 0 3px rgba(227, 179, 48, 0.1);
+        }
+        
+        .form-input:disabled {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background: #E3B330;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #D4A02A;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .expense-table th,
+        .expense-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .expense-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .expense-table tr:hover {
+            background: #f9fafb;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-draft {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .status-sent {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-overdue {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-cancelled {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .budget-progress {
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            height: 1rem;
+            overflow: hidden;
+        }
+        
+        .budget-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.3s ease;
+        }
+        
+        .budget-progress-bar.warning {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+        
+        .budget-progress-bar.danger {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Password Protection Overlay -->
+    <div id="passwordOverlay" class="password-overlay">
+        <div class="password-form">
+            <div class="text-center mb-6">
+                <img src="logo.jpg" alt="Limit Edge Logo" class="h-16 w-auto mx-auto mb-4">
+                <h2 class="text-2xl font-bold text-[#2B2E4A] mb-2">Accounting System Access</h2>
+                <p class="text-gray-600">Enter password to access financial data</p>
+            </div>
+            <form id="passwordForm">
+                <input type="password" id="passwordInput" class="password-input" placeholder="Enter password" required>
+                <button type="submit" class="login-btn">Access Accounting System</button>
+                <div id="errorMessage" class="error-message hidden"></div>
+            </form>
+            <div class="text-center mt-4">
+                <p class="text-sm text-gray-500">Contact: alexander.aryanfar@gmail.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until authenticated) -->
+    <div id="mainContent" class="hidden">
+
+        <!-- Professional Navigation -->
+        <nav class="professional-nav text-white p-4">
+            <div class="nav-container flex justify-between items-center">
+                <a href="index.html" class="nav-brand">
+                    <img src="logo.jpg" alt="Limit Edge Logo" class="h-8 w-auto mr-3">
+                    Limit Edge Reality Show
+                </a>
+                
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    ☰
+                </button>
+                
+                <div class="nav-menu" id="navMenu">
+                    <div class="nav-item">
+                        <a href="index.html" class="nav-link-pro home-link">Home</a>
+                    </div>
+                    
+                    <div class="nav-item dropdown">
+                        <div class="nav-link-pro dropdown-toggle">
+                            Budget
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header">Budget Management</div>
+                            <a href="budget-overview.html" class="dropdown-item">Overview</a>
+                            <a href="pre-production.html" class="dropdown-item">Pre-Production</a>
+                            <a href="production.html" class="dropdown-item">Production</a>
+                            <a href="post-production.html" class="dropdown-item">Post-Production</a>
+                            <a href="marketing.html" class="dropdown-item">Marketing</a>
+                            <a href="contingency.html" class="dropdown-item">Contingency</a>
+                            <a href="accounting-system.html" class="dropdown-item">Accounting System</a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item dropdown">
+                        <div class="nav-link-pro dropdown-toggle">
+                            Business
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header">Business & Investment</div>
+                            <a href="investor-benefits.html" class="dropdown-item">Investor Benefits</a>
+                            <a href="teaser-pilot.html" class="dropdown-item">Teaser & Pilot</a>
+                            <a href="participant-requirements.html" class="dropdown-item">Participant Requirements</a>
+                            <a href="the-challenge.html" class="dropdown-item">The Challenge</a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item">
+                        <a href="presentation-slides.html" class="nav-link-pro">Presentation</a>
+                    </div>
+                    
+                    <div class="nav-item">
+                        <button onclick="logout()" class="nav-link-pro">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <script>
+            function toggleMobileMenu() {
+                const menu = document.getElementById('navMenu');
+                menu.classList.toggle('active');
+            }
+        </script>
+
+        <header class="bg-[#2B2E4A] text-white p-8 text-center shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">ACCOUNTING SYSTEM</h1>
+            <p class="mt-2 text-xl font-bold">FINANCIAL MANAGEMENT & TRACKING</p>
+            <p class="mt-4 text-lg text-white">Secure Budget Control & Expense Management</p>
+        </header>
+
+        <main class="container mx-auto p-4 md:p-8">
+
+            <!-- Budget Overview Dashboard -->
+            <section class="accounting-card">
+                <h2 class="text-3xl font-bold text-center mb-6 text-[#2B2E4A]">Budget Overview Dashboard</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl font-black text-[#2B2E4A] mb-2">$372,600</div>
+                        <h3 class="text-xl font-bold text-[#5D6D93] mb-2">Total Budget</h3>
+                        <p class="text-gray-600">Complete project allocation</p>
+                    </div>
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl font-black text-[#E3B330] mb-2" id="totalSpent">$0</div>
+                        <h3 class="text-xl font-bold text-[#5D6D93] mb-2">Total Spent</h3>
+                        <p class="text-gray-600">Actual expenses incurred</p>
+                    </div>
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl font-black text-[#39A57D] mb-2" id="remainingBudget">$372,600</div>
+                        <h3 class="text-xl font-bold text-[#5D6D93] mb-2">Remaining</h3>
+                        <p class="text-gray-600">Available funds</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Budget Categories Progress -->
+            <section class="accounting-card">
+                <h3 class="text-2xl font-bold mb-6 text-[#2B2E4A]">Budget Categories Progress</h3>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-[#5D6D93]">Pre-Production</span>
+                            <span class="text-sm text-gray-600" id="preProdProgress">$0 / $33,000</span>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="budget-progress-bar" id="preProdBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-[#5D6D93]">Production</span>
+                            <span class="text-sm text-gray-600" id="prodProgress">$0 / $191,000</span>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="budget-progress-bar" id="prodBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-[#5D6D93]">Post-Production</span>
+                            <span class="text-sm text-gray-600" id="postProdProgress">$0 / $54,600</span>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="budget-progress-bar" id="postProdBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-[#5D6D93]">Marketing</span>
+                            <span class="text-sm text-gray-600" id="marketingProgress">$0 / $33,600</span>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="budget-progress-bar" id="marketingBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-[#5D6D93]">Contingency</span>
+                            <span class="text-sm text-gray-600" id="contingencyProgress">$0 / $50,400</span>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="budget-progress-bar" id="contingencyBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Expense Breakdown -->
+            <section class="accounting-card">
+                <h3 class="text-2xl font-bold mb-6 text-[#2B2E4A]">Detailed Expense Breakdown by Sub-Category</h3>
+                <div class="space-y-6">
+                    <!-- Pre-Production Sub-Categories -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#E3B330]">Pre-Production Sub-Categories</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Set & Obstacle Design</span>
+                                    <span class="text-sm text-gray-600" id="setObstacleProgress">$0 / $12,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="setObstacleBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Travel</span>
+                                    <span class="text-sm text-gray-600" id="travelProgress">$0 / $7,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="travelBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Marketing Prep</span>
+                                    <span class="text-sm text-gray-600" id="marketingPrepProgress">$0 / $7,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="marketingPrepBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Pre-Shoot Planning</span>
+                                    <span class="text-sm text-gray-600" id="preShootPlanningProgress">$0 / $5,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="preShootPlanningBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Casting & Selection</span>
+                                    <span class="text-sm text-gray-600" id="castingSelectionProgress">$0 / $2,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="castingSelectionBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Production Sub-Categories -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Production Sub-Categories</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Crew Salaries</span>
+                                    <span class="text-sm text-gray-600" id="crewSalariesProgress">$0 / $57,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="crewSalariesBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Competitor Fees</span>
+                                    <span class="text-sm text-gray-600" id="competitorFeesProgress">$0 / $29,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="competitorFeesBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Host Fees</span>
+                                    <span class="text-sm text-gray-600" id="hostFeesProgress">$0 / $29,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="hostFeesBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Accommodation</span>
+                                    <span class="text-sm text-gray-600" id="accommodationProgress">$0 / $28,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="accommodationBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Equipment Rental</span>
+                                    <span class="text-sm text-gray-600" id="equipmentRentalProgress">$0 / $23,100</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="equipmentRentalBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Transportation</span>
+                                    <span class="text-sm text-gray-600" id="transportationProgress">$0 / $15,500</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="transportationBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Catering & Food</span>
+                                    <span class="text-sm text-gray-600" id="cateringFoodProgress">$0 / $15,500</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="cateringFoodBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Wardrobe & Branding</span>
+                                    <span class="text-sm text-gray-600" id="wardrobeBrandingProgress">$0 / $10,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="wardrobeBrandingBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Insurance & Permits</span>
+                                    <span class="text-sm text-gray-600" id="insurancePermitsProgress">$0 / $7,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="insurancePermitsBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Misc. On-Site Costs</span>
+                                    <span class="text-sm text-gray-600" id="miscOnsiteProgress">$0 / $6,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="miscOnsiteBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post-Production Sub-Categories -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#D86A36]">Post-Production Sub-Categories</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Editing</span>
+                                    <span class="text-sm text-gray-600" id="editingProgress">$0 / $30,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="editingBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Sound Mixing & Music</span>
+                                    <span class="text-sm text-gray-600" id="soundMixingMusicProgress">$0 / $8,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="soundMixingMusicBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Color Grading</span>
+                                    <span class="text-sm text-gray-600" id="colorGradingProgress">$0 / $7,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="colorGradingBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Motion Graphics & Branding</span>
+                                    <span class="text-sm text-gray-600" id="motionGraphicsBrandingProgress">$0 / $6,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="motionGraphicsBrandingBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Final Mastering & Delivery</span>
+                                    <span class="text-sm text-gray-600" id="finalMasteringDeliveryProgress">$0 / $3,600</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="finalMasteringDeliveryBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marketing Sub-Categories -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#39A57D]">Marketing Sub-Categories</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">PR & Media Buys</span>
+                                    <span class="text-sm text-gray-600" id="prMediaBuysProgress">$0 / $15,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="prMediaBuysBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Trailer Production & Ads</span>
+                                    <span class="text-sm text-gray-600" id="trailerProductionAdsProgress">$0 / $10,600</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="trailerProductionAdsBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Social Media Campaigns</span>
+                                    <span class="text-sm text-gray-600" id="socialMediaCampaignsProgress">$0 / $8,000</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" id="socialMediaCampaignsBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contingency Sub-Categories -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#9E9E9E]">Contingency Sub-Categories</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Emergency & Unforeseen</span>
+                                    <span class="text-sm text-gray-600">Flexible Budget</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Risk Mitigation</span>
+                                    <span class="text-sm text-gray-600">Flexible Budget</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Insurance Deductibles</span>
+                                    <span class="text-sm text-gray-600">Flexible Budget</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prize Fund Sub-Categories -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#FF6B6B]">Prize Fund Sub-Categories</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-4 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Winner Prize Money</span>
+                                    <span class="text-sm text-gray-600">$10,000 Total</span>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="budget-progress-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expense Management -->
+            <section class="accounting-card">
+                <h3 class="text-2xl font-bold mb-6 text-[#2B2E4A]">Expense Management</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Add Expense Form -->
+                    <div class="expense-form">
+                        <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Add New Expense</h4>
+                        <form id="expenseForm">
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <input type="text" id="expenseDescription" class="form-input" placeholder="Enter expense description" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Amount</label>
+                                <input type="number" id="expenseAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select id="expenseCategory" class="form-input" required>
+                                    <option value="">Select category</option>
+                                    <option value="pre-production">Pre-Production</option>
+                                    <option value="production">Production</option>
+                                    <option value="post-production">Post-Production</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="contingency">Contingency</option>
+                                    <option value="prize-fund">Prize Fund</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Sub-Category</label>
+                                <select id="expenseSubCategory" class="form-input" required disabled>
+                                    <option value="">Select sub-category</option>
+                                </select>
+                                <small class="text-gray-500 text-sm mt-1">Please select a category first</small>
+                                <button type="button" onclick="updateSubCategories()" class="mt-2 px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">Refresh Sub-Categories</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date</label>
+                                <input type="date" id="expenseDate" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Vendor/Supplier</label>
+                                <input type="text" id="expenseVendor" class="form-input" placeholder="Enter vendor name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Receipt/Invoice Number</label>
+                                <input type="text" id="expenseReceipt" class="form-input" placeholder="Enter receipt number">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select id="expenseStatus" class="form-input" required>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Notes</label>
+                                <textarea id="expenseNotes" class="form-input" rows="3" placeholder="Additional notes"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary w-full">Add Expense</button>
+                        </form>
+                    </div>
+
+                    <!-- Expense List -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Recent Expenses</h4>
+                        <div class="overflow-x-auto">
+                            <table class="expense-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Category</th>
+                                        <th>Sub-Category</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expenseTableBody">
+                                    <!-- Expenses will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Invoice Management -->
+            <section class="accounting-card">
+                <h3 class="text-2xl font-bold mb-6 text-[#2B2E4A]">Invoice Management</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Create Invoice Form -->
+                    <div class="expense-form">
+                        <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Create New Invoice</h4>
+                        <form id="invoiceForm">
+                            <div class="form-group">
+                                <label class="form-label">Invoice Type</label>
+                                <select id="invoiceType" class="form-input" required>
+                                    <option value="">Select type</option>
+                                    <option value="sponsorship">Sponsorship</option>
+                                    <option value="investment">Investment</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="advertising">Advertising</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Client/Company Name</label>
+                                <input type="text" id="clientName" class="form-input" placeholder="Enter company name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Contact Person</label>
+                                <input type="text" id="contactPerson" class="form-input" placeholder="Enter contact person name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" id="clientEmail" class="form-input" placeholder="Enter email address" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" id="clientPhone" class="form-input" placeholder="Enter phone number">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <textarea id="clientAddress" class="form-input" rows="3" placeholder="Enter full address"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Invoice Amount</label>
+                                <input type="number" id="invoiceAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Currency</label>
+                                <select id="invoiceCurrency" class="form-input" required>
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="CAD">CAD (C$)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Payment Terms</label>
+                                <select id="paymentTerms" class="form-input" required>
+                                    <option value="net30">Net 30 Days</option>
+                                    <option value="net15">Net 15 Days</option>
+                                    <option value="net60">Net 60 Days</option>
+                                    <option value="due_on_receipt">Due on Receipt</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="customTermsGroup" style="display: none;">
+                                <label class="form-label">Custom Payment Terms</label>
+                                <input type="text" id="customTerms" class="form-input" placeholder="Enter custom terms">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Services/Description</label>
+                                <textarea id="invoiceDescription" class="form-input" rows="4" placeholder="Describe services or sponsorship benefits" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Due Date</label>
+                                <input type="date" id="invoiceDueDate" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select id="invoiceStatus" class="form-input" required>
+                                    <option value="draft">Draft</option>
+                                    <option value="sent">Sent</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="overdue">Overdue</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Notes</label>
+                                <textarea id="invoiceNotes" class="form-input" rows="3" placeholder="Additional notes"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary w-full">Create Invoice</button>
+                        </form>
+                    </div>
+
+                    <!-- Invoice List -->
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Recent Invoices</h4>
+                        <div class="overflow-x-auto">
+                            <table class="expense-table">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Client</th>
+                                        <th>Amount</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Due Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoiceTableBody">
+                                    <!-- Invoices will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-4">
+                            <button onclick="generateInvoicePDF()" class="btn-primary mr-2">Generate PDF</button>
+                            <button onclick="exportInvoices()" class="btn-secondary">Export to Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Invoice Templates -->
+            <section class="accounting-card">
+                <h3 class="text-2xl font-bold mb-6 text-[#2B2E4A]">Invoice Templates</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl mb-3">🏢</div>
+                        <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Sponsorship Package</h4>
+                        <p class="text-gray-600 mb-4">Standard sponsorship invoice template</p>
+                        <button onclick="useTemplate('sponsorship')" class="btn-primary">Use Template</button>
+                    </div>
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl mb-3">💰</div>
+                        <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Investment Invoice</h4>
+                        <p class="text-gray-600 mb-4">Investment contribution invoice</p>
+                        <button onclick="useTemplate('investment')" class="btn-primary">Use Template</button>
+                    </div>
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl mb-3">📺</div>
+                        <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Advertising Package</h4>
+                        <p class="text-gray-600 mb-4">Advertising and media placement</p>
+                        <button onclick="useTemplate('advertising')" class="btn-primary">Use Template</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Financial Reports -->
+            <section class="accounting-card">
+                <h3 class="text-2xl font-bold mb-6 text-[#2B2E4A]">Financial Reports</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl mb-3">📊</div>
+                        <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Monthly Report</h4>
+                        <p class="text-gray-600 mb-4">Generate monthly financial summary</p>
+                        <button class="btn-primary">Generate Report</button>
+                    </div>
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl mb-3">📈</div>
+                        <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Budget Analysis</h4>
+                        <p class="text-gray-600 mb-4">Analyze budget vs actual spending</p>
+                        <button class="btn-primary">View Analysis</button>
+                    </div>
+                    <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                        <div class="text-4xl mb-3">💾</div>
+                        <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Export Data</h4>
+                        <p class="text-gray-600 mb-4">Export financial data to Excel/PDF</p>
+                        <button class="btn-primary">Export</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security & Access Control -->
+            <section class="accounting-card">
+                <h3 class="text-2xl font-bold mb-6 text-[#2B2E4A]">Security & Access Control</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Access Log</h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-[#f9f5f1] rounded-lg">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">System Access</span>
+                                    <span class="text-sm text-gray-600" id="lastAccess">Just now</span>
+                                </div>
+                                <div class="text-sm text-gray-600">IP: 192.168.1.1 | Location: Toronto, CA</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Security Features</h4>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span>Password-protected access</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span>Session timeout protection</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span>Data encryption</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span>Audit trail logging</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        
+        <footer class="bg-[#2B2E4A] text-white p-6 text-center text-sm">
+            <p>Limit Edge - Accounting System | Alexander Aryanfar</p>
+            <p class="mt-1">Contact: alexander.aryanfar@gmail.com | @limitedgeshow | +1 (705) 970-0443</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Password Protection
+        const correctPassword = "LimitEdge2024!"; // Change this to your desired password
+        const passwordOverlay = document.getElementById('passwordOverlay');
+        const mainContent = document.getElementById('mainContent');
+        const passwordForm = document.getElementById('passwordForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Check if user is already authenticated
+        if (sessionStorage.getItem('authenticated') === 'true') {
+            showMainContent();
+        }
+
+        passwordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const enteredPassword = passwordInput.value;
+            
+            if (enteredPassword === correctPassword) {
+                sessionStorage.setItem('authenticated', 'true');
+                showMainContent();
+            } else {
+                showError('Incorrect password. Please try again.');
+                passwordInput.value = '';
+            }
+        });
+
+        function showMainContent() {
+            passwordOverlay.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            updateDashboard();
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+            setTimeout(() => {
+                errorMessage.classList.add('hidden');
+            }, 3000);
+        }
+
+        function logout() {
+            sessionStorage.removeItem('authenticated');
+            location.reload();
+        }
+
+        // Expense Management - now using MongoDB via API
+        let expenses = [];
+        const API_BASE = window.location.origin + '/api';
+        
+        // API Functions
+        async function loadExpenses() {
+            try {
+                console.log('loadExpenses called, API_BASE:', API_BASE);
+                const response = await fetch(`${API_BASE}/expenses`);
+                console.log('loadExpenses response:', response.status, response.statusText);
+                if (response.ok) {
+                    expenses = await response.json();
+                    console.log('loadExpenses loaded:', expenses.length, 'expenses');
+                    updateExpenseTable();
+                    updateDashboard();
+                    updateSubCategoryProgress();
+                } else {
+                    console.error('Failed to load expenses:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error loading expenses:', error);
+            }
+        }
+        
+        async function saveExpense(expenseData) {
+            try {
+                const response = await fetch(`${API_BASE}/expenses`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(expenseData)
+                });
+                
+                if (response.ok) {
+                    const newExpense = await response.json();
+                    expenses.unshift(newExpense);
+                    updateExpenseTable();
+                    updateDashboard();
+                    updateSubCategoryProgress();
+                    return newExpense;
+                } else {
+                    throw new Error('Failed to save expense');
+                }
+            } catch (error) {
+                console.error('Error saving expense:', error);
+                throw error;
+            }
+        }
+        
+        async function updateExpenseAPI(id, expenseData) {
+            try {
+                const response = await fetch(`${API_BASE}/expenses/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(expenseData)
+                });
+                
+                if (response.ok) {
+                    const updatedExpense = await response.json();
+                    const index = expenses.findIndex(e => e._id === id);
+                    if (index !== -1) {
+                        expenses[index] = updatedExpense;
+                    }
+                    updateExpenseTable();
+                    updateDashboard();
+                    updateSubCategoryProgress();
+                    return updatedExpense;
+                } else {
+                    throw new Error('Failed to update expense');
+                }
+            } catch (error) {
+                console.error('Error updating expense:', error);
+                throw error;
+            }
+        }
+        
+        async function deleteExpenseAPI(id) {
+            try {
+                const response = await fetch(`${API_BASE}/expenses/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    expenses = expenses.filter(e => e._id !== id);
+                    updateExpenseTable();
+                    updateDashboard();
+                    updateSubCategoryProgress();
+                } else {
+                    throw new Error('Failed to delete expense');
+                }
+            } catch (error) {
+                console.error('Error deleting expense:', error);
+                throw error;
+            }
+        }
+        
+        async function loadInvoices() {
+            try {
+                const response = await fetch(`${API_BASE}/invoices`);
+                if (response.ok) {
+                    invoices = await response.json();
+                    updateInvoiceTable();
+                } else {
+                    console.error('Failed to load invoices:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error loading invoices:', error);
+            }
+        }
+        
+        async function saveInvoice(invoiceData) {
+            try {
+                const response = await fetch(`${API_BASE}/invoices`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(invoiceData)
+                });
+                
+                if (response.ok) {
+                    const newInvoice = await response.json();
+                    invoices.unshift(newInvoice);
+                    updateInvoiceTable();
+                    return newInvoice;
+                } else {
+                    throw new Error('Failed to save invoice');
+                }
+            } catch (error) {
+                console.error('Error saving invoice:', error);
+                throw error;
+            }
+        }
+        
+        async function updateInvoiceAPI(id, invoiceData) {
+            try {
+                const response = await fetch(`${API_BASE}/invoices/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(invoiceData)
+                });
+                
+                if (response.ok) {
+                    const updatedInvoice = await response.json();
+                    const index = invoices.findIndex(i => i._id === id);
+                    if (index !== -1) {
+                        invoices[index] = updatedInvoice;
+                    }
+                    updateInvoiceTable();
+                    return updatedInvoice;
+                } else {
+                    throw new Error('Failed to update invoice');
+                }
+            } catch (error) {
+                console.error('Error updating invoice:', error);
+                throw error;
+            }
+        }
+        
+        async function deleteInvoiceAPI(id) {
+            try {
+                const response = await fetch(`${API_BASE}/invoices/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    invoices = invoices.filter(i => i._id !== id);
+                    updateInvoiceTable();
+                } else {
+                    throw new Error('Failed to delete invoice');
+                }
+            } catch (error) {
+                console.error('Error deleting invoice:', error);
+                throw error;
+            }
+        }
+
+        // Sub-categories mapping based on detailed budget analysis
+        const subCategories = {
+            'pre-production': {
+                'set-obstacle-design': 'Set & Obstacle Design ($12,000)',
+                'travel': 'Travel ($7,000)',
+                'marketing-prep': 'Marketing Prep ($7,000)',
+                'pre-shoot-planning': 'Pre-Shoot Planning ($5,000)',
+                'casting-selection': 'Casting & Selection ($2,000)'
+            },
+            'production': {
+                'crew-salaries': 'Crew Salaries ($57,000)',
+                'competitor-fees': 'Competitor Fees ($29,000)',
+                'host-fees': 'Host Fees ($29,000)',
+                'accommodation': 'Accommodation ($28,000)',
+                'equipment-rental': 'Equipment Rental/Purchase ($23,100)',
+                'transportation': 'Transportation ($15,500)',
+                'catering-food': 'Catering & Food ($15,500)',
+                'wardrobe-branding': 'Wardrobe & Branding ($10,000)',
+                'insurance-permits': 'Insurance & Permits ($7,000)',
+                'misc-onsite': 'Misc. On-Site Costs ($6,000)'
+            },
+            'post-production': {
+                'editing': 'Editing ($30,000)',
+                'sound-mixing-music': 'Sound Mixing & Music ($8,000)',
+                'color-grading': 'Color Grading ($7,000)',
+                'motion-graphics-branding': 'Motion Graphics & Branding ($6,000)',
+                'final-mastering-delivery': 'Final Mastering & Delivery ($3,600)'
+            },
+            'marketing': {
+                'pr-media-buys': 'PR & Media Buys ($15,000)',
+                'trailer-production-ads': 'Trailer Production & Online Ads ($10,600)',
+                'social-media-campaigns': 'Social Media Campaigns ($8,000)'
+            },
+            'contingency': {
+                'emergency-unforeseen': 'Emergency & Unforeseen Costs',
+                'risk-mitigation': 'Risk Mitigation',
+                'insurance-deductibles': 'Insurance Claim Deductibles',
+                'currency-fluctuation': 'Currency Fluctuation',
+                'vendor-supplier-issues': 'Vendor & Supplier Issues',
+                'technology-updates': 'Technology & Software Updates'
+            },
+            'prize-fund': {
+                'winner-prize': 'Winner Prize Money',
+                'runner-up-prizes': 'Runner-up Prizes',
+                'special-awards': 'Special Awards'
+            }
+        };
+
+        // Make function globally accessible
+        window.updateSubCategories = function() {
+            console.log('updateSubCategories called');
+            try {
+                const categorySelect = document.getElementById('expenseCategory');
+                const subCategorySelect = document.getElementById('expenseSubCategory');
+                
+                console.log('Category select found:', !!categorySelect);
+                console.log('Sub-category select found:', !!subCategorySelect);
+                
+                if (!categorySelect || !subCategorySelect) {
+                    console.error('Category or Sub-Category select elements not found');
+                    return;
+                }
+                
+                const category = categorySelect.value;
+                console.log('Selected category:', category);
+                console.log('Available subCategories:', subCategories);
+                
+                // Clear existing options
+                subCategorySelect.innerHTML = '<option value="">Select sub-category</option>';
+                
+                if (category && subCategories[category]) {
+                    console.log('Found sub-categories for', category, ':', subCategories[category]);
+                    
+                    Object.entries(subCategories[category]).forEach(([key, value]) => {
+                        const option = document.createElement('option');
+                        option.value = key;
+                        option.textContent = value;
+                        subCategorySelect.appendChild(option);
+                        console.log('Added option:', key, '=', value);
+                    });
+                    
+                    // Enable the sub-category dropdown
+                    subCategorySelect.disabled = false;
+                    subCategorySelect.style.backgroundColor = '#ffffff';
+                    subCategorySelect.style.color = '#374151';
+                    
+                    console.log(`Successfully loaded ${Object.keys(subCategories[category]).length} sub-categories for ${category}`);
+                } else {
+                    console.log('No sub-categories found for category:', category);
+                    // Disable the sub-category dropdown if no category is selected
+                    subCategorySelect.disabled = true;
+                    subCategorySelect.style.backgroundColor = '#f3f4f6';
+                    subCategorySelect.style.color = '#9ca3af';
+                }
+            } catch (error) {
+                console.error('Error in updateSubCategories:', error);
+            }
+        }
+
+        function updateDashboard() {
+            const totalSpent = expenses.reduce((sum, expense) => {
+                return expense.status === 'approved' ? sum + parseFloat(expense.amount) : sum;
+            }, 0);
+            
+            const remainingBudget = 372600 - totalSpent;
+            
+            document.getElementById('totalSpent').textContent = `$${totalSpent.toLocaleString()}`;
+            document.getElementById('remainingBudget').textContent = `$${remainingBudget.toLocaleString()}`;
+            
+            // Update category progress
+            updateCategoryProgress('pre-production', 33000, 'preProdProgress', 'preProdBar');
+            updateCategoryProgress('production', 191000, 'prodProgress', 'prodBar');
+            updateCategoryProgress('post-production', 54600, 'postProdProgress', 'postProdBar');
+            updateCategoryProgress('marketing', 33600, 'marketingProgress', 'marketingBar');
+            updateCategoryProgress('contingency', 50400, 'contingencyProgress', 'contingencyBar');
+            
+            // Update sub-category progress
+            updateSubCategoryProgress();
+            
+            updateExpenseTable();
+        }
+
+        function updateCategoryProgress(category, budget, progressId, barId) {
+            const categoryExpenses = expenses.filter(expense => 
+                expense.category === category && expense.status === 'approved'
+            );
+            const spent = categoryExpenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+            const percentage = (spent / budget) * 100;
+            
+            document.getElementById(progressId).textContent = `$${spent.toLocaleString()} / $${budget.toLocaleString()}`;
+            const progressBar = document.getElementById(barId);
+            progressBar.style.width = `${percentage}%`;
+            
+            if (percentage > 90) {
+                progressBar.classList.add('danger');
+            } else if (percentage > 75) {
+                progressBar.classList.add('warning');
+            }
+        }
+
+        function updateSubCategoryProgress() {
+            // Sub-category budgets mapping
+            const subCategoryBudgets = {
+                'set-obstacle-design': 12000,
+                'travel': 7000,
+                'marketing-prep': 7000,
+                'pre-shoot-planning': 5000,
+                'casting-selection': 2000,
+                'crew-salaries': 57000,
+                'competitor-fees': 29000,
+                'host-fees': 29000,
+                'accommodation': 28000,
+                'equipment-rental': 23100,
+                'transportation': 15500,
+                'catering-food': 15500,
+                'wardrobe-branding': 10000,
+                'insurance-permits': 7000,
+                'misc-onsite': 6000,
+                'editing': 30000,
+                'sound-mixing-music': 8000,
+                'color-grading': 7000,
+                'motion-graphics-branding': 6000,
+                'final-mastering-delivery': 3600,
+                'pr-media-buys': 15000,
+                'trailer-production-ads': 10600,
+                'social-media-campaigns': 8000
+            };
+
+            // Update each sub-category progress
+            Object.entries(subCategoryBudgets).forEach(([subCategory, budget]) => {
+                const subCategoryExpenses = expenses.filter(expense => 
+                    expense.subCategory === subCategory && expense.status === 'approved'
+                );
+                const spent = subCategoryExpenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+                const percentage = (spent / budget) * 100;
+                
+                const progressId = `${subCategory.replace('-', '')}Progress`;
+                const barId = `${subCategory.replace('-', '')}Bar`;
+                
+                const progressElement = document.getElementById(progressId);
+                const barElement = document.getElementById(barId);
+                
+                if (progressElement && barElement) {
+                    progressElement.textContent = `$${spent.toLocaleString()} / $${budget.toLocaleString()}`;
+                    barElement.style.width = `${percentage}%`;
+                    
+                    // Remove existing classes
+                    barElement.classList.remove('warning', 'danger');
+                    
+                    if (percentage > 90) {
+                        barElement.classList.add('danger');
+                    } else if (percentage > 75) {
+                        barElement.classList.add('warning');
+                    }
+                }
+            });
+        }
+
+        function updateExpenseTable() {
+            const tbody = document.getElementById('expenseTableBody');
+            tbody.innerHTML = '';
+            
+            expenses.slice(-10).reverse().forEach(expense => {
+                const row = document.createElement('tr');
+                const subCategoryText = expense.subCategory ? 
+                    subCategories[expense.category][expense.subCategory] || expense.subCategory : 
+                    'N/A';
+                
+                row.innerHTML = `
+                    <td>${new Date(expense.date).toLocaleDateString()}</td>
+                    <td>${expense.description}</td>
+                    <td>$${parseFloat(expense.amount).toLocaleString()}</td>
+                    <td>${expense.category.replace('-', ' ').toUpperCase()}</td>
+                    <td>${subCategoryText}</td>
+                    <td><span class="status-badge status-${expense.status}">${expense.status.toUpperCase()}</span></td>
+                    <td>
+                        <button onclick="editExpense('${expense.id}')" class="btn-secondary text-sm">Edit</button>
+                        <button onclick="deleteExpense('${expense.id}')" class="btn-secondary text-sm ml-2">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Expense Form Handler
+        document.getElementById('expenseForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const expenseData = {
+                description: document.getElementById('expenseDescription').value,
+                amount: parseFloat(document.getElementById('expenseAmount').value),
+                category: document.getElementById('expenseCategory').value,
+                subCategory: document.getElementById('expenseSubCategory').value,
+                date: new Date(document.getElementById('expenseDate').value),
+                vendor: document.getElementById('expenseVendor').value,
+                receipt: document.getElementById('expenseReceipt').value,
+                status: document.getElementById('expenseStatus').value,
+                notes: document.getElementById('expenseNotes').value
+            };
+            
+            try {
+                await saveExpense(expenseData);
+                this.reset();
+                document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('expenseSubCategory').disabled = true;
+                alert('Expense added successfully!');
+            } catch (error) {
+                alert('Error adding expense: ' + error.message);
+            }
+        });
+
+        function editExpense(id) {
+            const expense = expenses.find(e => e.id === id);
+            if (expense) {
+                // Populate form with expense data
+                document.getElementById('expenseDescription').value = expense.description;
+                document.getElementById('expenseAmount').value = expense.amount;
+                document.getElementById('expenseCategory').value = expense.category;
+                
+                // Update sub-categories first
+                updateSubCategories();
+                
+                // Set sub-category after a brief delay to ensure options are loaded
+                setTimeout(() => {
+                    document.getElementById('expenseSubCategory').value = expense.subCategory || '';
+                }, 100);
+                
+                document.getElementById('expenseDate').value = expense.date;
+                document.getElementById('expenseVendor').value = expense.vendor;
+                document.getElementById('expenseReceipt').value = expense.receipt;
+                document.getElementById('expenseStatus').value = expense.status;
+                document.getElementById('expenseNotes').value = expense.notes;
+                
+                // Remove from expenses array
+                expenses = expenses.filter(e => e.id !== id);
+                localStorage.setItem('expenses', JSON.stringify(expenses));
+                
+                updateDashboard();
+            }
+        }
+
+        function deleteExpense(id) {
+            if (confirm('Are you sure you want to delete this expense?')) {
+                expenses = expenses.filter(e => e.id !== id);
+                localStorage.setItem('expenses', JSON.stringify(expenses));
+                updateDashboard();
+            }
+        }
+
+        // Set default date to today
+        document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+
+        // Invoice Management - now using MongoDB via API
+        let invoices = [];
+        let invoiceCounter = 1000;
+
+        function updateInvoiceTable() {
+            const tbody = document.getElementById('invoiceTableBody');
+            tbody.innerHTML = '';
+            
+            invoices.slice(-10).reverse().forEach(invoice => {
+                const row = document.createElement('tr');
+                const statusClass = `status-${invoice.status}`;
+                const currencySymbol = getCurrencySymbol(invoice.currency);
+                
+                row.innerHTML = `
+                    <td>#${invoice.invoiceNumber}</td>
+                    <td>${invoice.clientName}</td>
+                    <td>${currencySymbol}${parseFloat(invoice.amount).toLocaleString()}</td>
+                    <td>${invoice.type.charAt(0).toUpperCase() + invoice.type.slice(1)}</td>
+                    <td><span class="status-badge ${statusClass}">${invoice.status.toUpperCase()}</span></td>
+                    <td>${new Date(invoice.dueDate).toLocaleDateString()}</td>
+                    <td>
+                        <button onclick="viewInvoice('${invoice.id}')" class="btn-secondary text-sm">View</button>
+                        <button onclick="editInvoice('${invoice.id}')" class="btn-secondary text-sm ml-2">Edit</button>
+                        <button onclick="deleteInvoice('${invoice.id}')" class="btn-secondary text-sm ml-2">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function getCurrencySymbol(currency) {
+            const symbols = {
+                'USD': '$',
+                'EUR': '€',
+                'CAD': 'C$'
+            };
+            return symbols[currency] || '$';
+        }
+
+        function generateInvoiceNumber() {
+            invoiceCounter++;
+            localStorage.setItem('invoiceCounter', invoiceCounter.toString());
+            return `LE-${invoiceCounter}`;
+        }
+
+        // Invoice Form Handler
+        document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const invoice = {
+                id: Date.now().toString(),
+                invoiceNumber: generateInvoiceNumber(),
+                type: document.getElementById('invoiceType').value,
+                clientName: document.getElementById('clientName').value,
+                contactPerson: document.getElementById('contactPerson').value,
+                clientEmail: document.getElementById('clientEmail').value,
+                clientPhone: document.getElementById('clientPhone').value,
+                clientAddress: document.getElementById('clientAddress').value,
+                amount: document.getElementById('invoiceAmount').value,
+                currency: document.getElementById('invoiceCurrency').value,
+                paymentTerms: document.getElementById('paymentTerms').value,
+                customTerms: document.getElementById('customTerms').value,
+                description: document.getElementById('invoiceDescription').value,
+                dueDate: document.getElementById('invoiceDueDate').value,
+                status: document.getElementById('invoiceStatus').value,
+                notes: document.getElementById('invoiceNotes').value,
+                createdAt: new Date().toISOString()
+            };
+            
+            invoices.push(invoice);
+            localStorage.setItem('invoices', JSON.stringify(invoices));
+            
+            // Reset form
+            this.reset();
+            document.getElementById('invoiceDueDate').value = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 30 days from now
+            
+            updateInvoiceTable();
+            
+            alert('Invoice created successfully!');
+        });
+
+        // Payment Terms Handler
+        document.getElementById('paymentTerms').addEventListener('change', function() {
+            const customTermsGroup = document.getElementById('customTermsGroup');
+            if (this.value === 'custom') {
+                customTermsGroup.style.display = 'block';
+            } else {
+                customTermsGroup.style.display = 'none';
+            }
+        });
+
+        function viewInvoice(id) {
+            const invoice = invoices.find(i => i.id === id);
+            if (invoice) {
+                // Create a modal or new window to display invoice
+                const invoiceWindow = window.open('', '_blank', 'width=800,height=600');
+                invoiceWindow.document.write(generateInvoiceHTML(invoice));
+            }
+        }
+
+        function editInvoice(id) {
+            const invoice = invoices.find(i => i.id === id);
+            if (invoice) {
+                // Populate form with invoice data
+                document.getElementById('invoiceType').value = invoice.type;
+                document.getElementById('clientName').value = invoice.clientName;
+                document.getElementById('contactPerson').value = invoice.contactPerson;
+                document.getElementById('clientEmail').value = invoice.clientEmail;
+                document.getElementById('clientPhone').value = invoice.clientPhone;
+                document.getElementById('clientAddress').value = invoice.clientAddress;
+                document.getElementById('invoiceAmount').value = invoice.amount;
+                document.getElementById('invoiceCurrency').value = invoice.currency;
+                document.getElementById('paymentTerms').value = invoice.paymentTerms;
+                document.getElementById('customTerms').value = invoice.customTerms;
+                document.getElementById('invoiceDescription').value = invoice.description;
+                document.getElementById('invoiceDueDate').value = invoice.dueDate;
+                document.getElementById('invoiceStatus').value = invoice.status;
+                document.getElementById('invoiceNotes').value = invoice.notes;
+                
+                // Remove from invoices array
+                invoices = invoices.filter(i => i.id !== id);
+                localStorage.setItem('invoices', JSON.stringify(invoices));
+                
+                updateInvoiceTable();
+            }
+        }
+
+        function deleteInvoice(id) {
+            if (confirm('Are you sure you want to delete this invoice?')) {
+                invoices = invoices.filter(i => i.id !== id);
+                localStorage.setItem('invoices', JSON.stringify(invoices));
+                updateInvoiceTable();
+            }
+        }
+
+        function useTemplate(templateType) {
+            const templates = {
+                sponsorship: {
+                    type: 'sponsorship',
+                    description: 'Sponsorship Package for Limit Edge Reality Show\n\nIncludes:\n- Logo placement on show materials\n- Social media mentions\n- Brand visibility during episodes\n- Marketing collaboration opportunities',
+                    paymentTerms: 'net30'
+                },
+                investment: {
+                    type: 'investment',
+                    description: 'Investment Contribution for Limit Edge Reality Show\n\nInvestment includes:\n- Equity participation in the project\n- Revenue sharing opportunities\n- Executive producer credits\n- Marketing and distribution benefits',
+                    paymentTerms: 'net15'
+                },
+                advertising: {
+                    type: 'advertising',
+                    description: 'Advertising Package for Limit Edge Reality Show\n\nIncludes:\n- Commercial spots during episodes\n- Digital advertising placement\n- Brand integration opportunities\n- Cross-platform promotion',
+                    paymentTerms: 'net30'
+                }
+            };
+            
+            const template = templates[templateType];
+            if (template) {
+                document.getElementById('invoiceType').value = template.type;
+                document.getElementById('invoiceDescription').value = template.description;
+                document.getElementById('paymentTerms').value = template.paymentTerms;
+                
+                // Set default due date
+                const days = template.paymentTerms === 'net15' ? 15 : 30;
+                const dueDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+                document.getElementById('invoiceDueDate').value = dueDate.toISOString().split('T')[0];
+            }
+        }
+
+        function generateInvoiceHTML(invoice) {
+            const currencySymbol = getCurrencySymbol(invoice.currency);
+            const paymentTermsText = invoice.paymentTerms === 'custom' ? invoice.customTerms : 
+                invoice.paymentTerms.replace('net', 'Net ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            
+            return `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Invoice ${invoice.invoiceNumber}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        .header { text-align: center; margin-bottom: 40px; }
+                        .company-info { margin-bottom: 30px; }
+                        .invoice-details { margin-bottom: 30px; }
+                        .client-info { margin-bottom: 30px; }
+                        .description { margin-bottom: 30px; }
+                        .footer { margin-top: 40px; text-align: center; }
+                        table { width: 100%; border-collapse: collapse; }
+                        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+                        .total { font-weight: bold; font-size: 18px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>LIMIT EDGE REALITY SHOW</h1>
+                        <h2>INVOICE</h2>
+                    </div>
+                    
+                    <div class="company-info">
+                        <h3>Limit Edge Productions</h3>
+                        <p>Alexander Aryanfar - Producer</p>
+                        <p>Email: alexander.aryanfar@gmail.com</p>
+                        <p>Phone: +1 (705) 970-0443</p>
+                        <p>Website: www.limitedgeshow.com</p>
+                    </div>
+                    
+                    <div class="invoice-details">
+                        <table>
+                            <tr>
+                                <td><strong>Invoice Number:</strong></td>
+                                <td>${invoice.invoiceNumber}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Invoice Date:</strong></td>
+                                <td>${new Date(invoice.createdAt).toLocaleDateString()}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Due Date:</strong></td>
+                                <td>${new Date(invoice.dueDate).toLocaleDateString()}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Payment Terms:</strong></td>
+                                <td>${paymentTermsText}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="client-info">
+                        <h3>Bill To:</h3>
+                        <p><strong>${invoice.clientName}</strong></p>
+                        ${invoice.contactPerson ? `<p>Contact: ${invoice.contactPerson}</p>` : ''}
+                        <p>Email: ${invoice.clientEmail}</p>
+                        ${invoice.clientPhone ? `<p>Phone: ${invoice.clientPhone}</p>` : ''}
+                        ${invoice.clientAddress ? `<p>Address: ${invoice.clientAddress}</p>` : ''}
+                    </div>
+                    
+                    <div class="description">
+                        <h3>Description of Services:</h3>
+                        <p style="white-space: pre-line;">${invoice.description}</p>
+                    </div>
+                    
+                    <table>
+                        <tr>
+                            <th>Description</th>
+                            <th>Amount</th>
+                        </tr>
+                        <tr>
+                            <td>${invoice.type.charAt(0).toUpperCase() + invoice.type.slice(1)} Package</td>
+                            <td>${currencySymbol}${parseFloat(invoice.amount).toLocaleString()}</td>
+                        </tr>
+                        <tr class="total">
+                            <td><strong>Total</strong></td>
+                            <td><strong>${currencySymbol}${parseFloat(invoice.amount).toLocaleString()}</strong></td>
+                        </tr>
+                    </table>
+                    
+                    ${invoice.notes ? `
+                    <div style="margin-top: 30px;">
+                        <h3>Notes:</h3>
+                        <p>${invoice.notes}</p>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="footer">
+                        <p>Thank you for your business!</p>
+                        <p>For questions regarding this invoice, please contact alexander.aryanfar@gmail.com</p>
+                    </div>
+                </body>
+                </html>
+            `;
+        }
+
+        function generateInvoicePDF() {
+            if (invoices.length === 0) {
+                alert('No invoices to generate PDF for.');
+                return;
+            }
+            
+            // Simple PDF generation - in a real implementation, you'd use a library like jsPDF
+            const selectedInvoice = invoices[invoices.length - 1]; // Get the latest invoice
+            const invoiceWindow = window.open('', '_blank', 'width=800,height=600');
+            invoiceWindow.document.write(generateInvoiceHTML(selectedInvoice));
+            invoiceWindow.print();
+        }
+
+        function exportInvoices() {
+            if (invoices.length === 0) {
+                alert('No invoices to export.');
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = "Invoice Number,Client Name,Type,Amount,Currency,Status,Due Date,Created Date\n";
+            invoices.forEach(invoice => {
+                csvContent += `"${invoice.invoiceNumber}","${invoice.clientName}","${invoice.type}","${invoice.amount}","${invoice.currency}","${invoice.status}","${invoice.dueDate}","${invoice.createdAt}"\n`;
+            });
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `limit-edge-invoices-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Set default due date to 30 days from now
+        document.getElementById('invoiceDueDate').value = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+        // Initialize invoice table
+        updateInvoiceTable();
+
+        // Auto-logout after 30 minutes of inactivity
+        let inactivityTimer;
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                logout();
+            }, 30 * 60 * 1000); // 30 minutes
+        }
+
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('keypress', resetInactivityTimer);
+        resetInactivityTimer();
+        
+        // Add event listener for category dropdown
+        function initializeSubCategoryDropdown() {
+            const categorySelect = document.getElementById('expenseCategory');
+            if (categorySelect) {
+                categorySelect.addEventListener('change', updateSubCategories);
+                console.log('Category dropdown event listener added');
+            } else {
+                console.error('Category dropdown not found');
+            }
+            
+            // Initialize sub-category dropdown
+            updateSubCategories();
+        }
+        
+        // Try multiple initialization methods
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', async function() {
+                initializeSubCategoryDropdown();
+                await loadExpenses();
+                await loadInvoices();
+            });
+        } else {
+            initializeSubCategoryDropdown();
+            loadExpenses();
+            loadInvoices();
+        }
+    </script>
+</body>
+</html>

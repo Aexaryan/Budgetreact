@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-Production - Limit Edge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-gray-800">
+
+    <!-- Professional Navigation -->
+    <nav class="professional-nav text-white p-4">
+        <div class="nav-container flex justify-between items-center">
+            <a href="index.html" class="nav-brand">
+                <img src="logo.jpg" alt="Limit Edge Logo" class="h-8 w-auto mr-3">
+                Limit Edge Reality Show
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link-pro home-link">Home</a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle active">
+                        Budget
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Budget Management</div>
+                        <a href="budget-overview.html" class="dropdown-item">Overview</a>
+                        <a href="pre-production.html" class="dropdown-item">Pre-Production</a>
+                        <a href="production.html" class="dropdown-item">Production</a>
+                        <a href="post-production.html" class="dropdown-item">Post-Production</a>
+                        <a href="marketing.html" class="dropdown-item">Marketing</a>
+                        <a href="contingency.html" class="dropdown-item">Contingency</a>
+                        <a href="accounting-system.html" class="dropdown-item">Accounting System</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <div class="nav-link-pro dropdown-toggle">
+                        Business
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Business & Investment</div>
+                        <a href="investor-benefits.html" class="dropdown-item">Investor Benefits</a>
+                        <a href="teaser-pilot.html" class="dropdown-item">Teaser & Pilot</a>
+                        <a href="participant-requirements.html" class="dropdown-item">Participant Requirements</a>
+                        <a href="the-challenge.html" class="dropdown-item">The Challenge</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="presentation-slides.html" class="nav-link-pro">Presentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
+
+    <header class="bg-[#D86A36] text-white p-8 text-center shadow-lg">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">POST-PRODUCTION</h1>
+        <p class="mt-2 text-xl font-bold">EDITING & POLISH PHASE</p>
+        <p class="mt-4 text-lg text-white">Total Budget: $54,600 (14.65% of overall budget)</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="text-center my-12">
+            <h2 class="text-5xl md:text-6xl font-black text-[#D86A36] tracking-tighter my-4">$54,600</h2>
+            <p class="max-w-4xl mx-auto text-gray-600 text-lg">
+                The post-production phase transforms raw footage into a polished, broadcast-ready reality show. This **$54,600** investment ensures professional editing, sound design, visual effects, and color grading to create an engaging and high-quality final product.
+            </p>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Post-Production Budget Breakdown</h3>
+            <div class="chart-container h-[400px]">
+                <canvas id="postProductionChart"></canvas>
+            </div>
+            <p class="mt-6 text-gray-600 text-center max-w-2xl mx-auto">
+                **Editing** receives the largest allocation at **$30,000** (54.95%), ensuring comprehensive story development and narrative flow. **Sound Mixing & Music Licensing** and **Color Grading** each receive significant portions to create professional audio and visual quality.
+            </p>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#D86A36] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Editing</h4>
+                </div>
+                <div class="text-3xl font-black text-[#D86A36] mb-2">$30,000</div>
+                <p class="text-gray-600 mb-4">54.95% of post-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Offline editing and story assembly</li>
+                    <li>• Online editing and final cut</li>
+                    <li>• Multi-camera synchronization</li>
+                    <li>• Narrative structure development</li>
+                    <li>• Pacing and rhythm optimization</li>
+                    <li>• Multiple episode versions</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#5D6D93] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Sound Mixing & Music</h4>
+                </div>
+                <div class="text-3xl font-black text-[#5D6D93] mb-2">$8,000</div>
+                <p class="text-gray-600 mb-4">14.65% of post-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Professional sound mixing and mastering</li>
+                    <li>• Music licensing and original compositions</li>
+                    <li>• Sound effects and audio enhancement</li>
+                    <li>• Dialogue cleanup and ADR</li>
+                    <li>• Audio level balancing and compression</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#E3B330] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Color Grading</h4>
+                </div>
+                <div class="text-3xl font-black text-[#E3B330] mb-2">$7,000</div>
+                <p class="text-gray-600 mb-4">12.82% of post-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Professional color correction and grading</li>
+                    <li>• Visual consistency across all footage</li>
+                    <li>• Mood and atmosphere enhancement</li>
+                    <li>• Brand color palette implementation</li>
+                    <li>• HDR and broadcast standard compliance</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#39A57D] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Motion Graphics & Branding</h4>
+                </div>
+                <div class="text-3xl font-black text-[#39A57D] mb-2">$6,000</div>
+                <p class="text-gray-600 mb-4">10.99% of post-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Title sequences and show branding</li>
+                    <li>• Lower thirds and on-screen graphics</li>
+                    <li>• Logo animations and transitions</li>
+                    <li>• Scoreboards and competition graphics</li>
+                    <li>• Social media content adaptations</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-4 h-4 bg-[#9E9E9E] rounded-full mr-3"></div>
+                    <h4 class="text-xl font-bold text-[#5D6D93]">Final Mastering & Delivery</h4>
+                </div>
+                <div class="text-3xl font-black text-[#9E9E9E] mb-2">$3,600</div>
+                <p class="text-gray-600 mb-4">6.59% of post-production budget</p>
+                <ul class="text-gray-700 space-y-2">
+                    <li>• Final quality control and mastering</li>
+                    <li>• Multiple format delivery (broadcast, streaming)</li>
+                    <li>• Technical specifications compliance</li>
+                    <li>• Archive and backup creation</li>
+                    <li>• Distribution package preparation</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Post-Production Timeline</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-[#D86A36] rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">1</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Week 1-2</h4>
+                    <h5 class="font-semibold text-[#D86A36] mb-3">Ingest & Assembly</h5>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Raw footage ingestion and organization</li>
+                        <li>• Multi-camera sync and logging</li>
+                        <li>• Initial story assembly</li>
+                        <li>• Rough cut development</li>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-[#D86A36] rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">2</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Week 3-4</h4>
+                    <h5 class="font-semibold text-[#D86A36] mb-3">Fine Cut & Sound</h5>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Fine cut editing and pacing</li>
+                        <li>• Sound design and music integration</li>
+                        <li>• Dialogue cleanup and enhancement</li>
+                        <li>• Audio mixing and mastering</li>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-[#D86A36] rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">3</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Week 5-6</h4>
+                    <h5 class="font-semibold text-[#D86A36] mb-3">Visual Polish</h5>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Color grading and correction</li>
+                        <li>• Motion graphics and branding</li>
+                        <li>• Visual effects and enhancements</li>
+                        <li>• Title sequences and graphics</li>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-[#D86A36] rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">4</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Week 7-8</h4>
+                    <h5 class="font-semibold text-[#D86A36] mb-3">Final Delivery</h5>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Final quality control and review</li>
+                        <li>• Multiple format mastering</li>
+                        <li>• Delivery package preparation</li>
+                        <li>• Archive and backup creation</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Post-Production Deliverables</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Final Episodes</h4>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-[#D86A36] mr-2">✓</span>
+                            <span>Complete edited episodes (45-60 minutes each)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#D86A36] mr-2">✓</span>
+                            <span>Broadcast-ready master files (4K/HD)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#D86A36] mr-2">✓</span>
+                            <span>Streaming platform optimized versions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#D86A36] mr-2">✓</span>
+                            <span>Social media cutdowns and highlights</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-4 text-[#5D6D93]">Supporting Materials</h4>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-[#D86A36] mr-2">✓</span>
+                            <span>Professional audio tracks and stems</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#D86A36] mr-2">✓</span>
+                            <span>Motion graphics packages and templates</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#D86A36] mr-2">✓</span>
+                            <span>Color correction LUTs and presets</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-[#D86A36] mr-2">✓</span>
+                            <span>Technical documentation and metadata</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-10 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-6">Quality Standards</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">🎬</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Broadcast Quality</h4>
+                    <p class="text-gray-600">Professional editing standards meeting industry broadcast requirements</p>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">🎵</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Audio Excellence</h4>
+                    <p class="text-gray-600">Crystal clear sound design with professional mixing and mastering</p>
+                </div>
+                <div class="text-center p-6 bg-[#f9f5f1] rounded-lg">
+                    <div class="text-4xl mb-3">🎨</div>
+                    <h4 class="text-xl font-bold text-[#5D6D93] mb-2">Visual Polish</h4>
+                    <p class="text-gray-600">Consistent color grading and professional motion graphics integration</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer class="bg-[#2B2E4A] text-white p-6 text-center text-sm">
+        <p>Limit Edge - Post-Production Phase | Alexander Aryanfar</p>
+        <p class="mt-1">Contact: alexander.aryanfar@gmail.com | @limitedgeshow | +1 (705) 970-0443</p>
+    </footer>
+
+    <script>
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#2B2E4A',
+                        font: { size: 12 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = context.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                            const percentage = (context.parsed / total * 100).toFixed(1) + '%';
+                            return `${context.label}: $${context.parsed.toLocaleString()} (${percentage})`;
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('postProductionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Editing', 'Sound Mixing & Music Licensing', 'Color Grading', 'Motion Graphics & Branding', 'Final Mastering & Delivery'],
+                datasets: [{
+                    label: 'Post-Production Budget',
+                    data: [30000, 8000, 7000, 6000, 3600],
+                    backgroundColor: [
+                        '#D86A36',
+                        '#5D6D93',
+                        '#E3B330',
+                        '#39A57D',
+                        '#9E9E9E'
+                    ],
+                    borderColor: '#fce8d5',
+                    borderWidth: 5,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                ...chartOptions,
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+</html>
