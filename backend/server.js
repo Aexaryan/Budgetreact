@@ -25,6 +25,24 @@ mongoose.connect(MONGODB_URI, {
     console.error('MongoDB connection error:', error);
 });
 
+// Common schema options for transform
+const schemaOptions = {
+    toJSON: {
+        transform(doc, ret) {
+            ret.id = ret._id.toString();
+            delete ret._id;
+            delete ret.__v;
+        }
+    },
+    toObject: {
+        transform(doc, ret) {
+            ret.id = ret._id.toString();
+            delete ret._id;
+            delete ret.__v;
+        }
+    }
+};
+
 // Database Schema
 const expenseSchema = new mongoose.Schema({
     description: { type: String, required: true },
@@ -38,7 +56,7 @@ const expenseSchema = new mongoose.Schema({
     notes: String,
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
-});
+}, schemaOptions);
 
 const invoiceSchema = new mongoose.Schema({
     invoiceNumber: { type: String, required: true, unique: true },
@@ -58,12 +76,25 @@ const invoiceSchema = new mongoose.Schema({
     notes: String,
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
-});
+}, schemaOptions);
 
 const Expense = mongoose.model('Expense', expenseSchema);
 const Invoice = mongoose.model('Invoice', invoiceSchema);
 
-// Routes
+// API Routes
+
+// Login
+app.post('/api/login', (req, res) => {
+    const { password } = req.body;
+    // IMPORTANT: In a production environment, use environment variables for sensitive data.
+    const correctPassword = process.env.ACCOUNTING_PASSWORD;
+
+    if (correctPassword && password === correctPassword) {
+        res.status(200).json({ message: 'Authentication successful' });
+    } else {
+        res.status(401).json({ message: 'Authentication failed' });
+    }
+});
 
 // Get all expenses
 app.get('/api/expenses', async (req, res) => {
