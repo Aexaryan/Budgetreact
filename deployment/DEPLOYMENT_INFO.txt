@@ -1,0 +1,25 @@
+Limit Edge Budget - Deployment Package
+=====================================
+
+Files included:
+- index.html (React app entry point)
+- static/ (CSS, JS, and other assets)
+- .htaccess (Apache configuration for SPA routing)
+- images/ (App images and media)
+
+Upload Instructions:
+1. Upload all files to your Hostinger public_html directory
+2. Ensure .htaccess is in the root directory
+3. Verify file permissions (644 for files, 755 for directories)
+4. Test your domain to ensure the React app loads
+
+Backend API:
+- If you need the backend API, deploy it separately
+- Update REACT_APP_API_URL in your environment
+- Or use the backend server.js for API endpoints
+
+Troubleshooting:
+- Check .htaccess is uploaded and working
+- Verify index.html is in root directory
+- Test React Router navigation
+- Check browser console for errors
